@@ -6,14 +6,16 @@ int main()
     Memory memory;
     CPU cpu;
     cpu.Reset(memory);
-    memory[0xFFFC] = CPU::INS_LDA_ZP;
-    memory[0xFFFD] = 0x42;
-    memory[0x0042] = 0x84;
-    cpu.Execute(3, memory);
+    cpu.Reset(memory);
+    /*memory[0xFFFC] = CPU::INS_LDA_ABS;
+    memory[0xFFFD] = 0x01;
+    memory[0xFFFE] = 0x02;
+    memory[0x0201] = 0x33;
 
-    std::cout << cpu.FetchStackAddress();
+    cpu.Execute(4, memory);
+    */
 
     return 0;
 }
 
-
+/

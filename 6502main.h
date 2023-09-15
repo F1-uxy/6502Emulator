@@ -79,8 +79,16 @@ struct CPU
         PC = 0xFFFC;
         SP = 0xFF;
         StackPage = 0x01;
-        Acc, X, Y = 0;
-        N, V, B, D, I, Z, C = 0;
+        Acc = 0;
+        X = 0;
+        Y = 0;
+        N = 0;
+        V = 0;
+        B = 0;
+        D = 0;
+        I = 0;
+        Z = 0;
+        C = 0;
         memory.Initialise();
     }
 
@@ -103,7 +111,6 @@ struct CPU
         PC++;
 
         Cycles -= 2;
-
         return Data;
     }
 
@@ -112,14 +119,14 @@ struct CPU
         return 0x0100 | SP;
     }
 
-    Byte Read(uint& Cycles, Memory& memory, Byte Addr)
+    Byte Read(uint& Cycles, Memory& memory, Word Addr)
     {
         Byte Data = memory[Addr];
         Cycles--;
         return Data;
     }
 
-    Byte ReadWord(uint& Cycles, Memory memory, Byte Addr)
+    Byte ReadWord(uint& Cycles, Memory memory, Word Addr)
     {
         // Little Endian
         Word Address = memory[Addr];
