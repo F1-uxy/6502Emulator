@@ -136,4 +136,38 @@ TEST_CASE("INS_JMP_ABS can change PC")
 
 }
 
+TEST_CASE("INS_JMP_IND can change PC taking a 16 bit address that "
+          "points to lower 8 bits of another address")
+{
+    cpu.Reset(memory);
+    memory[0xFFFC] = CPU::INS_JMP_IND;
+    memory[0xFFFD] = 0x01;
+    memory[0xFFFE] = 0x02;
+
+    memory[0x0201] = 0x03;
+    memory[0x0202] = 0x02;
+
+
+    cpu.Execute(5, memory);
+
+    REQUIRE(cpu.PC == 0x0203);
+
+
+}
+
+
+TEST_CASE("INS_JSR can push address to stack and set PC to target")
+{
+    cpu.Reset(memory);
+    memory[0xFFFC] = CPU::INS_JSR;
+    memory[0xFFFD] = 0x01;
+    memory[0xFFFE] = 0x02;
+
+    cpu.Execute(8, memory);
+
+    REQUIRE(cpu.PC == 0x0201);
+    REQUIRE(cpu.SP == 0xFD);
+
+}
+
 

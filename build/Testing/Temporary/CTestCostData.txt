@@ -46,12 +46,101 @@ LDA_ZP_X 0 0
 LDA_ABS 0 0
 LDA_ABS_X 0 0
 INS_JMP_ABS 0 0
-Memory Initialisation 1 0.0263756
-CPU Register Reset 1 0.0132473
-LDA_IM Load value into ACC Immediate 1 0.013476
-LDA_ZP can Load Value into Acc 1 0.0133842
-LDA_ZP_X can Load Value into Acc with offset X 1 0.0129412
-LDA_ABS can Load  1 0.0144775
-LDA_ABS_X can Load address offset by x 1 0.0134943
-INS_JMP_ABS can change PC 1 0.0137243
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory 0 1
+CPU 0 0
+LDA_IM 0 0
+LDA_ZP 0 0
+LDA_ZP_X 0 0
+LDA_ABS 0 0
+LDA_ABS_X 0 0
+INS_JMP_ABS 0 0
+INS_JMP_IND 0 0
+INS_JSR 0 0
+Memory Initialisation 1 0.0276935
+CPU Register Reset 1 0.0134993
+LDA_IM Load value into ACC Immediate 1 0.0130916
+LDA_ZP can Load Value into Acc 1 0.0132853
+LDA_ZP_X can Load Value into Acc with offset X 1 0.0131823
+LDA_ABS can Load  1 0.0137964
+LDA_ABS_X can Load address offset by x 1 0.0134417
+INS_JMP_ABS can change PC 1 0.0132089
+INS_JMP_IND can change PC taking a 16 bit address that points to lower 8 bits of another address 1 0.0133243
+INS_JSR can push address to stack and set PC to target 1 0.013371
 ---

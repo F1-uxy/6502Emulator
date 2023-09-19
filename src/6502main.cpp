@@ -7,15 +7,14 @@ int main()
     CPU cpu;
     cpu.Reset(memory);
 
-    memory[0xFFFA] = CPU::INS_LDA_ABS_X;
-    memory[0xFFFB] = 0x01;
-    memory[0xFFFC] = 0x02;
-    cpu.X = 0x01;
-    memory[0x2010] = 0x44;
+    memory[0xFFFC] = CPU::INS_JSR;
+    memory[0xFFFD] = 0x01;
+    memory[0xFFFE] = 0x02;
 
-    cpu.Execute(4, memory);
 
-    printf("Memory[0x2010] value: %d", memory[0x2010]);
+    cpu.Execute(8, memory);
+
+    printf("PC value: %d \n", cpu.PC);
 
 
     return 0;

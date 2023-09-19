@@ -113,7 +113,7 @@ struct CPU
         Cycles -= 2;
         return Data;
     }
-
+    // Return StackPointer as full 16 bit 0x01__ Address (First Page)
     Word FetchStackAddress()
     {
         return 0x0100 | SP;
@@ -126,18 +126,56 @@ struct CPU
         return Data;
     }
 
-    Byte ReadWord(uint& Cycles, Memory memory, Word Addr)
+    Word ReadWord(uint& Cycles, Memory& memory, Word Addr)
     {
         // Little Endian
         Word Address = memory[Addr];
         PC++;
 
-        Address | (memory[PC] << 8);
+        Word ReturnAddress = Address | (memory[Addr + 1] << 8);
         PC++;
 
         Cycles -= 2;
 
-        return Address;
+        return ReturnAddress;
+    }
+
+    void WriteByte(uint& Cycles, Memory& memory, Word Addr, Byte Value)
+    {
+        memory[Addr] = Value;
+        Cycles--;
+    }
+
+    void WriteWord(uint& Cycles, Memory& memory, Word Addr, Word Value)
+    {
+        memory[Addr] = Value & 0xFF;
+        memory[Addr + 1] = (Value >> 8) & 0xFF;
+        Cycles -= 2;
+    }
+
+    void PushWordToStack(uint& Cycles, Memory& memory, Word Addr)
+    {
+        Byte LowAddrByte = Addr & 0xFF;
+        Byte HighAddrByte = (Addr >> 8) & 0xFF;
+        WriteWord(Cycles, memory, FetchStackAddress(), HighAddrByte);
+        SP--;
+        WriteWord(Cycles, memory, FetchStackAddress(), LowAddrByte);
+        SP--;
+    }
+
+    void PushPCMinusOneToStack(uint& Cycles, Memory& memory)
+    {
+        PushWordToStack(Cycles, memory, PC-1);
+    }
+
+    void PushPCPlussOneToStack(uint& Cycles, Memory& memory)
+    {
+        PushWordToStack(Cycles, memory, PC+1);
+    }
+
+    void PushPCToStack(uint& Cycles, Memory& memory)
+    {
+        PushWordToStack(Cycles, memory, PC);
     }
 
 
@@ -149,6 +187,7 @@ struct CPU
 
     void Execute(uint Cycles, Memory& memory)
     {
+        printf("PC value: %d \n", PC);
         while (Cycles > 0)
         {
             Byte Ins = Fetch(Cycles, memory);
@@ -201,20 +240,18 @@ struct CPU
                 {
                     Word Address = FetchWord(Cycles, memory);
                     PC = ReadWord(Cycles, memory, Address);
-
-                }
+                }break;
                 case INS_JSR:
                 {
                     Word SubAddress = FetchWord(Cycles, memory);
-                    memory[SP] = PC - 1;
-                    Cycles--;
+                    PushPCMinusOneToStack(Cycles, memory);
                     PC = SubAddress;
                     Cycles--;
                 } break;
                 default:
                 {
-                    printf("Instruction not found: %d", Ins);
-                    printf("Current PC Value: %d", PC);
+                    printf("Instruction not found: %d \n", Ins);
+                    printf("PC value: %d \n", PC);
                 } break;
             }
 
