@@ -1,0 +1,10 @@
+^C:\USERS\FLUXY\DOCUMENTS\CODE\6502EMULATOR\BUILD\CMAKEFILES\1DD23014DB515B484FB371D65D5F7A3E\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Fluxy/Documents/Code/6502Emulator -BC:/Users/Fluxy/Documents/Code/6502Emulator/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Fluxy/Documents/Code/6502Emulator/build/6502Emulator.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

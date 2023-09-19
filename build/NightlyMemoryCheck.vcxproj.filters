@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Fluxy\Documents\Code\6502Emulator\build\CMakeFiles\1dd23014db515b484fb371d65d5f7a3e\NightlyMemoryCheck.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Fluxy\Documents\Code\6502Emulator\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Fluxy\Documents\Code\6502Emulator\build\CMakeFiles\NightlyMemoryCheck" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E603308E-9AEF-3438-89A8-1825D4AE8E15}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

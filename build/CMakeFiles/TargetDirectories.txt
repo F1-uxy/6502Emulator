@@ -1,0 +1,13 @@
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/tests.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/Experimental.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/Nightly.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/Continuous.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/lib/Catch2/CMakeFiles/RUN_TESTS.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/lib/Catch2/CMakeFiles/ALL_BUILD.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/lib/Catch2/src/CMakeFiles/Catch2.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/lib/Catch2/src/CMakeFiles/Catch2WithMain.dir
+C:/Users/Fluxy/Documents/Code/6502Emulator/build/lib/Catch2/src/CMakeFiles/RUN_TESTS.dir

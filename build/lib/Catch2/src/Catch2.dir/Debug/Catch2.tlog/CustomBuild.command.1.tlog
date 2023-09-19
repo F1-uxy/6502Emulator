@@ -1,0 +1,10 @@
+^C:\USERS\FLUXY\DOCUMENTS\CODE\6502EMULATOR\LIB\CATCH2\SRC\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Fluxy/Documents/Code/6502Emulator -BC:/Users/Fluxy/Documents/Code/6502Emulator/build --check-stamp-file C:/Users/Fluxy/Documents/Code/6502Emulator/build/lib/Catch2/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

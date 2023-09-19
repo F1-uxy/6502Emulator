@@ -1,0 +1,724 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"build" : "lib/Catch2",
+					"childIndexes" : 
+					[
+						2
+					],
+					"jsonFile" : "directory-lib.Catch2-Debug-0c4b24f6e5c85bf897e6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "lib/Catch2/src",
+					"jsonFile" : "directory-lib.Catch2.src-Debug-14f4aa31d4b61d47c9f1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2/src",
+					"targetIndexes" : 
+					[
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "6502Emulator",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2
+					],
+					"name" : "Catch2",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Debug-7592df1ed886b6278402.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@7a5140751747960d75fc",
+					"jsonFile" : "target-ALL_BUILD-Debug-4dd596d7321e0de67378.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2-Debug-febff4286402f4374eb8.json",
+					"name" : "Catch2",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2WithMain::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2WithMain-Debug-a710e41594a1221ab97c.json",
+					"name" : "Catch2WithMain",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Continuous::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Continuous-Debug-a3c82541a9d995ddc0f8.json",
+					"name" : "Continuous",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Experimental::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Experimental-Debug-3ae9e8ea868e900e0a51.json",
+					"name" : "Experimental",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Nightly::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Nightly-Debug-2a00a851ad09943c64f1.json",
+					"name" : "Nightly",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "NightlyMemoryCheck::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-NightlyMemoryCheck-Debug-6f41b063225ba6b4e269.json",
+					"name" : "NightlyMemoryCheck",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Debug-6de5ec6b805b0935a52f.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tests-Debug-f1dcbbc2137ab54e1345.json",
+					"name" : "tests",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-Release-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"build" : "lib/Catch2",
+					"childIndexes" : 
+					[
+						2
+					],
+					"jsonFile" : "directory-lib.Catch2-Release-0c4b24f6e5c85bf897e6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "lib/Catch2/src",
+					"jsonFile" : "directory-lib.Catch2.src-Release-14f4aa31d4b61d47c9f1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2/src",
+					"targetIndexes" : 
+					[
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "6502Emulator",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2
+					],
+					"name" : "Catch2",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Release-7592df1ed886b6278402.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@7a5140751747960d75fc",
+					"jsonFile" : "target-ALL_BUILD-Release-4dd596d7321e0de67378.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2-Release-c31dbed8b0ba6a3172a8.json",
+					"name" : "Catch2",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2WithMain::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2WithMain-Release-93c713eb5af3f2fd62cc.json",
+					"name" : "Catch2WithMain",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Continuous::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Continuous-Release-a3c82541a9d995ddc0f8.json",
+					"name" : "Continuous",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Experimental::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Experimental-Release-3ae9e8ea868e900e0a51.json",
+					"name" : "Experimental",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Nightly::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Nightly-Release-2a00a851ad09943c64f1.json",
+					"name" : "Nightly",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "NightlyMemoryCheck::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-NightlyMemoryCheck-Release-6f41b063225ba6b4e269.json",
+					"name" : "NightlyMemoryCheck",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Release-6de5ec6b805b0935a52f.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tests-Release-189d1124fd993e251da6.json",
+					"name" : "tests",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-MinSizeRel-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"build" : "lib/Catch2",
+					"childIndexes" : 
+					[
+						2
+					],
+					"jsonFile" : "directory-lib.Catch2-MinSizeRel-0c4b24f6e5c85bf897e6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "lib/Catch2/src",
+					"jsonFile" : "directory-lib.Catch2.src-MinSizeRel-14f4aa31d4b61d47c9f1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2/src",
+					"targetIndexes" : 
+					[
+						2,
+						3
+					]
+				}
+			],
+			"name" : "MinSizeRel",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "6502Emulator",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2
+					],
+					"name" : "Catch2",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-7592df1ed886b6278402.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@7a5140751747960d75fc",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-4dd596d7321e0de67378.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2-MinSizeRel-f901ee3aa0a99aff2ac1.json",
+					"name" : "Catch2",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2WithMain::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2WithMain-MinSizeRel-ced9f92ab6071ee5f12b.json",
+					"name" : "Catch2WithMain",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Continuous::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Continuous-MinSizeRel-a3c82541a9d995ddc0f8.json",
+					"name" : "Continuous",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Experimental::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Experimental-MinSizeRel-3ae9e8ea868e900e0a51.json",
+					"name" : "Experimental",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Nightly::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Nightly-MinSizeRel-2a00a851ad09943c64f1.json",
+					"name" : "Nightly",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "NightlyMemoryCheck::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-NightlyMemoryCheck-MinSizeRel-6f41b063225ba6b4e269.json",
+					"name" : "NightlyMemoryCheck",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-6de5ec6b805b0935a52f.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tests-MinSizeRel-2e37628f88ee77de9bda.json",
+					"name" : "tests",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-RelWithDebInfo-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"build" : "lib/Catch2",
+					"childIndexes" : 
+					[
+						2
+					],
+					"jsonFile" : "directory-lib.Catch2-RelWithDebInfo-0c4b24f6e5c85bf897e6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "lib/Catch2/src",
+					"jsonFile" : "directory-lib.Catch2.src-RelWithDebInfo-14f4aa31d4b61d47c9f1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "lib/Catch2/src",
+					"targetIndexes" : 
+					[
+						2,
+						3
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "6502Emulator",
+					"targetIndexes" : 
+					[
+						0,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1,
+						2
+					],
+					"name" : "Catch2",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-7592df1ed886b6278402.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@7a5140751747960d75fc",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-4dd596d7321e0de67378.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2-RelWithDebInfo-ac57196339257edca924.json",
+					"name" : "Catch2",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Catch2WithMain::@ef7708e1e90b565ceb3c",
+					"jsonFile" : "target-Catch2WithMain-RelWithDebInfo-29a367f8746dfc260382.json",
+					"name" : "Catch2WithMain",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Continuous::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Continuous-RelWithDebInfo-a3c82541a9d995ddc0f8.json",
+					"name" : "Continuous",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Experimental::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Experimental-RelWithDebInfo-3ae9e8ea868e900e0a51.json",
+					"name" : "Experimental",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Nightly::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Nightly-RelWithDebInfo-2a00a851ad09943c64f1.json",
+					"name" : "Nightly",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "NightlyMemoryCheck::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-NightlyMemoryCheck-RelWithDebInfo-6f41b063225ba6b4e269.json",
+					"name" : "NightlyMemoryCheck",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-6de5ec6b805b0935a52f.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tests-RelWithDebInfo-8ff0abf4807b8c7295d8.json",
+					"name" : "tests",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Fluxy/Documents/Code/6502Emulator/build",
+		"source" : "C:/Users/Fluxy/Documents/Code/6502Emulator"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
