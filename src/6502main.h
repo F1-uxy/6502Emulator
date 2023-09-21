@@ -10,13 +10,14 @@
 using Byte = unsigned char;
 using Word = unsigned short;
 
-using uint = unsigned int;
+using u32 = unsigned int;
+using s32 = signed int;
 
 
 
 struct Memory
 {
-    static constexpr uint MAX_MEM = 1024 * 64;
+    static constexpr u32 MAX_MEM = 1024 * 64;
     Byte Data[MAX_MEM];
 
     void Initialise()
@@ -25,13 +26,13 @@ struct Memory
     }
 
     // Read 1 Byte
-    Byte operator[](uint Address) const
+    Byte operator[](u32 Address) const
     {
         return Data[Address];
     }
 
     // Write 1 Byte
-    Byte& operator[](uint Address)
+    Byte& operator[](u32 Address)
     {
         return Data[Address];
     }
@@ -65,6 +66,7 @@ struct CPU
             INS_LDA_ZP_X = 0xB5,
             INS_LDA_ABS = 0xAD,
             INS_LDA_ABS_X = 0xBD,
+            INS_LDA_ABS_Y = 0xB9,
             INS_JMP_ABS = 0x4C,
             INS_JSR = 0x20,
             INS_JMP_IND = 0x6C;
@@ -92,7 +94,7 @@ struct CPU
         memory.Initialise();
     }
 
-    Byte Fetch(uint& Cycles, Memory& memory)
+    Byte Fetch(s32& Cycles, Memory& memory)
     {
         Byte Data = memory[PC];
         PC++;
@@ -101,7 +103,7 @@ struct CPU
 
     }
 
-    Word FetchWord(uint& Cycles, Memory& memory)
+    Word FetchWord(s32& Cycles, Memory& memory)
     {
         // Little Endian
         Word Data = memory[PC];
@@ -119,14 +121,14 @@ struct CPU
         return 0x0100 | SP;
     }
 
-    Byte Read(uint& Cycles, Memory& memory, Word Addr)
+    Byte Read(s32& Cycles, Memory& memory, Word Addr)
     {
         Byte Data = memory[Addr];
         Cycles--;
         return Data;
     }
 
-    Word ReadWord(uint& Cycles, Memory& memory, Word Addr)
+    Word ReadWord(s32& Cycles, Memory& memory, Word Addr)
     {
         // Little Endian
         Word Address = memory[Addr];
@@ -140,20 +142,20 @@ struct CPU
         return ReturnAddress;
     }
 
-    void WriteByte(uint& Cycles, Memory& memory, Word Addr, Byte Value)
+    void WriteByte(s32& Cycles, Memory& memory, Word Addr, Byte Value)
     {
         memory[Addr] = Value;
         Cycles--;
     }
 
-    void WriteWord(uint& Cycles, Memory& memory, Word Addr, Word Value)
+    void WriteWord(s32& Cycles, Memory& memory, Word Addr, Word Value)
     {
         memory[Addr] = Value & 0xFF;
         memory[Addr + 1] = (Value >> 8) & 0xFF;
         Cycles -= 2;
     }
 
-    void PushWordToStack(uint& Cycles, Memory& memory, Word Addr)
+    void PushWordToStack(s32& Cycles, Memory& memory, Word Addr)
     {
         Byte LowAddrByte = Addr & 0xFF;
         Byte HighAddrByte = (Addr >> 8) & 0xFF;
@@ -163,17 +165,17 @@ struct CPU
         SP--;
     }
 
-    void PushPCMinusOneToStack(uint& Cycles, Memory& memory)
+    void PushPCMinusOneToStack(s32& Cycles, Memory& memory)
     {
         PushWordToStack(Cycles, memory, PC-1);
     }
 
-    void PushPCPlussOneToStack(uint& Cycles, Memory& memory)
+    void PushPCPlussOneToStack(s32& Cycles, Memory& memory)
     {
         PushWordToStack(Cycles, memory, PC+1);
     }
 
-    void PushPCToStack(uint& Cycles, Memory& memory)
+    void PushPCToStack(s32& Cycles, Memory& memory)
     {
         PushWordToStack(Cycles, memory, PC);
     }
@@ -185,7 +187,7 @@ struct CPU
         N = (Acc & 0b10000000) > 0;
     }
 
-    void Execute(uint Cycles, Memory& memory)
+    int Execute(s32 Cycles, Memory& memory)
     {
         printf("PC value: %d \n", PC);
         while (Cycles > 0)
@@ -229,6 +231,14 @@ struct CPU
                     Acc = Read(Cycles, memory, AbsAddress);
                     LDASetStatus();
                 } break;
+                case INS_LDA_ABS_Y:
+                {
+                    Word AbsAddress = FetchWord(Cycles, memory);
+                    AbsAddress += Y;
+                    Cycles--;
+                    Acc = Read(Cycles, memory, AbsAddress);
+                    LDASetStatus();
+                }break;
                     //  6502 Cannot obtain address if indirect vector falls on a page boundary
                 case INS_JMP_ABS:
                 {
@@ -255,7 +265,11 @@ struct CPU
                 } break;
             }
 
+            return Cycles;
+
         }
+
+
 
     }
 

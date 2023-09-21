@@ -11,10 +11,12 @@ int main()
     memory[0xFFFD] = 0x01;
     memory[0xFFFE] = 0x02;
 
+    uint CyclesLeft;
 
-    cpu.Execute(8, memory);
+    CyclesLeft = cpu.Execute(8, memory);
 
     printf("PC value: %d \n", cpu.PC);
+    printf("Cycles Left: %d \n", CyclesLeft);
 
 
     return 0;
