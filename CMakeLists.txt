@@ -1,13 +1,18 @@
 cmake_minimum_required(VERSION 3.8)
 project(6502Emulator)
 
-add_subdirectory(lib/Catch2)
+# Set the output directory for executables
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-# These tests can use the Catch2-provided main
-add_executable(tests tests/test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+add_executable(6502Emulator "src/6502main.cpp")
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
+FetchContent_MakeAvailable(googletest)
 
-include(CTest)
-include(Catch)
-catch_discover_tests(tests)
+enable_testing()
+add_subdirectory(tests)
+
