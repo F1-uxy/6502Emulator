@@ -1,6 +1,2 @@
-/cmake-build-debug
-/.idea
-/out
-/lib
 /build
-catch.hpp
+/.vscode
