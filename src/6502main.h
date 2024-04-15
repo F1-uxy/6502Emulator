@@ -67,6 +67,8 @@ struct CPU
             INS_LDA_ABS = 0xAD,
             INS_LDA_ABS_X = 0xBD,
             INS_LDA_ABS_Y = 0xB9,
+            INS_LDA_IND_X = 0xA1,
+            INS_LDA_IND_Y = 0XB1,
             INS_JMP_ABS = 0x4C,
             INS_JSR = 0x20,
             INS_JMP_IND = 0x6C;
@@ -121,7 +123,7 @@ struct CPU
         return 0x0100 | SP;
     }
 
-    Byte Read(s32& Cycles, Memory& memory, Word Addr)
+    Byte ReadByte(s32& Cycles, Memory& memory, Word Addr)
     {
         Byte Data = memory[Addr];
         Cycles--;
@@ -159,9 +161,9 @@ struct CPU
     {
         Byte LowAddrByte = Addr & 0xFF;
         Byte HighAddrByte = (Addr >> 8) & 0xFF;
-        WriteWord(Cycles, memory, FetchStackAddress(), HighAddrByte);
+        WriteByte(Cycles, memory, FetchStackAddress(), HighAddrByte);
         SP--;
-        WriteWord(Cycles, memory, FetchStackAddress(), LowAddrByte);
+        WriteByte(Cycles, memory, FetchStackAddress(), LowAddrByte);
         SP--;
     }
 
@@ -180,6 +182,15 @@ struct CPU
         PushWordToStack(Cycles, memory, PC);
     }
 
+    Word AddrIndirectX(s32& Cycles, Memory& memory)
+    {
+        Byte ZPAddress = Fetch(Cycles, memory);
+        ZPAddress += X;
+        Cycles--;
+        Word ReturnAddress = ReadWord(Cycles, memory, ZPAddress);
+        return ReturnAddress;
+    }
+
 
     void LDASetStatus()
     {
@@ -189,7 +200,6 @@ struct CPU
 
     int Execute(s32 Cycles, Memory& memory)
     {
-        printf("PC value: %d \n", PC);
         while (Cycles > 0)
         {
             Byte Ins = Fetch(Cycles, memory);
@@ -205,7 +215,7 @@ struct CPU
                 case INS_LDA_ZP:
                 {
                     Byte ZeroPageAddr = Fetch(Cycles, memory);
-                    Acc = Read(Cycles, memory, ZeroPageAddr);
+                    Acc = ReadByte(Cycles, memory, ZeroPageAddr);
                     LDASetStatus();
                 } break;
                 case INS_LDA_ZP_X:
@@ -213,38 +223,53 @@ struct CPU
                     Byte ZeroPageAddr = Fetch(Cycles, memory);
                     ZeroPageAddr += X;
                     Cycles--;
-                    Acc = Read(Cycles, memory, ZeroPageAddr);
+                    Acc = ReadByte(Cycles, memory, ZeroPageAddr);
                     LDASetStatus();
                 } break;
                 case INS_LDA_ABS:
                 {
                     Word AbsAddress = FetchWord(Cycles, memory);
-                    Acc = Read(Cycles, memory, AbsAddress);
+                    Acc = ReadByte(Cycles, memory, AbsAddress);
                     LDASetStatus();
 
                 } break;
                 case INS_LDA_ABS_X:
                 {
                     Word AbsAddress = FetchWord(Cycles, memory);
-                    AbsAddress += X;
-                    Cycles--;
-                    Acc = Read(Cycles, memory, AbsAddress);
+                    Word FinalAddress = AbsAddress + X;
+
+                    if((AbsAddress & 0xFF00) != (FinalAddress & 0xFF00))
+                    {
+                        Cycles--;
+                    }
+
+                    Acc = ReadByte(Cycles, memory, FinalAddress);
                     LDASetStatus();
                 } break;
                 case INS_LDA_ABS_Y:
                 {
                     Word AbsAddress = FetchWord(Cycles, memory);
-                    AbsAddress += Y;
-                    Cycles--;
-                    Acc = Read(Cycles, memory, AbsAddress);
+                    Word FinalAddress = AbsAddress + Y;
+
+                    if((AbsAddress & 0xFF00) != (FinalAddress & 0xFF00))
+                    {
+                        Cycles--;
+                    }
+
+                    Acc = ReadByte(Cycles, memory, FinalAddress);
                     LDASetStatus();
                 }break;
                     //  6502 Cannot obtain address if indirect vector falls on a page boundary
+                case INS_LDA_IND_X:
+                {
+                    Word Address = AddrIndirectX(Cycles, memory);
+                    Acc = ReadByte(Cycles, memory, Address);
+                    LDASetStatus();
+                }break;
                 case INS_JMP_ABS:
                 {
                     Word Address = FetchWord(Cycles, memory);
                     PC = Address;
-                    Cycles--;
                 } break;
                 case INS_JMP_IND:
                 {
@@ -254,7 +279,9 @@ struct CPU
                 case INS_JSR:
                 {
                     Word SubAddress = FetchWord(Cycles, memory);
+
                     PushPCMinusOneToStack(Cycles, memory);
+
                     PC = SubAddress;
                     Cycles--;
                 } break;
@@ -262,14 +289,13 @@ struct CPU
                 {
                     printf("Instruction not found: %d \n", Ins);
                     printf("PC value: %d \n", PC);
+                    return -1;
                 } break;
             }
 
-            return Cycles;
-
         }
 
-
+        return Cycles;
 
     }
 

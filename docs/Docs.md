@@ -2,13 +2,14 @@
 
 ### Load/Store Operations:
 
-| LDA         | Load Accumulator |     |
-| ----------- | ---------------- | --- |
-| Immediate   | INS_LDA_IM       | $A9 |
-| Zero Page   | INS_LDA_ZP       | $A5 |
-| Zero Page X | INS_LDA_ZP_X     | $B5 |
-| Absolute    | INS_LDA_ABS      | $AD |
-| Absolute X  | INS_LDA_ABS_X    | $BD |
+| LDA          | Load Accumulator |     |
+| ------------ | ---------------- | --- |
+| Immediate    | INS_LDA_IM       | $A9 |
+| Zero Page    | INS_LDA_ZP       | $A5 |
+| Zero Page X  | INS_LDA_ZP_X     | $B5 |
+| Absolute     | INS_LDA_ABS      | $AD |
+| Absolute X   | INS_LDA_ABS_X    | $BD |
+| (Indirect) X | INS_LDA_IND_X    | $A1 |
 
 
 ### Jumps & Calls

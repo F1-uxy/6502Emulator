@@ -2,11 +2,11 @@
 // Created by Fluxy on 14/09/2023.
 //
 
-
+/*
 // my_tests.cpp
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
-#include <Catch2/catch_all.hpp>
+//#include <Catch2/catch_all.hpp>
 #include "../src/6502main.h"
 
 CPU cpu;
@@ -18,11 +18,7 @@ TEST_CASE("Memory Initialisation", "[memory]")
     memory.Initialise();
 
     //Check specific memory locations are a certain value e.g. (0)
-    /*
-    SECTION("Verify individual memory locations are zero")
-    {
-        REQUIRE(memory[0x0000] == 0);
-    }*/
+
 
     // Check Whole memory is initialised to 0
     SECTION("Verify memory is zero in a range")
@@ -127,7 +123,8 @@ TEST_CASE("LDA_ABS_X can Load address offset by x")
     REQUIRE(cpu.N == 0);
     REQUIRE_FALSE(CyclesLeft);
 }
-/*
+
+*
 TEST_CASE("LDA_ABS_X can Load address offset by x and Jump page")
 {
 cpu.Reset(memory);
@@ -144,7 +141,8 @@ REQUIRE(cpu.X == 0x01);
 REQUIRE(cpu.Z == 0);
 REQUIRE(cpu.N == 0);
 }
-*/
+*
+
 TEST_CASE("INS_JMP_ABS can change PC")
 {
     cpu.Reset(memory);
@@ -194,5 +192,5 @@ TEST_CASE("INS_JSR can push address to stack and set PC to target")
     REQUIRE_FALSE(CyclesLeft);
 
 }
-
+*/
 

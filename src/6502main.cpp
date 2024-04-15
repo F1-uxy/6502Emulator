@@ -6,17 +6,16 @@ int main()
     Memory memory;
     CPU cpu;
     cpu.Reset(memory);
+	// Set up memory with INS_JSR instruction and subroutine address
+    memory[0xFFFC] = CPU::INS_JSR; // JSR instruction
+    memory[0xFFFD] = 0x01; // Low byte of subroutine address
+    memory[0xFFFE] = 0x02; // High byte of subroutine address
 
-    memory[0xFFFC] = CPU::INS_JSR;
-    memory[0xFFFD] = 0x01;
-    memory[0xFFFE] = 0x02;
+    // Execute the CPU instruction
+    u32 cyclesLeft = cpu.Execute(6, memory);
 
-    uint CyclesLeft;
 
-    CyclesLeft = cpu.Execute(8, memory);
 
-    printf("PC value: %d \n", cpu.PC);
-    printf("Cycles Left: %d \n", CyclesLeft);
 
 
     return 0;

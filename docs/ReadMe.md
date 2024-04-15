@@ -1,5 +1,11 @@
 # 6502 Emulator
 
-Build Directory
-cmake --build . 
-ctest -V (verbose)
+To build:
+Run `cmake --build .` in the `build` directory
+
+To run main:
+Run `6502Emulator` in `bin` directory
+
+To run tests:
+Run `6502EmulatorTests` in `bin` directory
+
