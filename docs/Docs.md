@@ -11,6 +11,13 @@
 | Absolute X   | INS_LDA_ABS_X    | $BD |
 | (Indirect) X | INS_LDA_IND_X    | $A1 |
 
+| LDX         | Load X Register |     |
+| ----------- | --------------- | --- |
+| Immediate   | INS_LDX_IM      | $A2 |
+| Zero Page   | INS_LDX_ZP      | $A6 |
+| Zero Page Y | INS_LDX_ZP_Y    | $B6 |
+| Absolute    | INS_LDX_ABS     | $AE |
+| Absolute Y  | INS_LDX_ABS_Y   | $BE |
 
 ### Jumps & Calls
 

@@ -42,14 +42,12 @@ struct Memory
 struct CPU
 {
 
-
-
     Word PC; //Program Counter
     Byte SP; //Stack Pointer
     Byte StackPage;
 
     Byte Acc; //Accumulator
-    Byte X, Y;  //Registers
+    Byte X, Y;//Registers
 
     Byte N : 1;
     Byte V : 1;
@@ -71,7 +69,12 @@ struct CPU
             INS_LDA_IND_Y = 0XB1,
             INS_JMP_ABS = 0x4C,
             INS_JSR = 0x20,
-            INS_JMP_IND = 0x6C;
+            INS_JMP_IND = 0x6C,
+            INS_LDX_IM = 0xA2,
+            INS_LDX_ZP = 0xA6,
+            INS_LDX_ZP_Y = 0xB6,
+            INS_LDX_ABS = 0xAE,
+            INS_LDX_ABS_Y = 0xBE;
 
 
     //Flags: Carry(C), Negative(N), Overflow(V), Zero(Z), Decimal(D), IRQB_Disable(I)
@@ -191,11 +194,56 @@ struct CPU
         return ReturnAddress;
     }
 
+    inline void LoadImmediate(Byte& reg, s32& Cycles, Memory& memory)
+    {
+        reg = Fetch(Cycles, memory);
+    }
+
+    void LoadZP(Byte& reg, s32& Cycles, Memory& memory)
+    {
+        Byte ZeroPageAddr = Fetch(Cycles, memory);
+        reg = ReadByte(Cycles, memory, ZeroPageAddr);
+    }
+
+    void LoadZPOffset(Byte& reg, Byte& offset, s32& Cycles, Memory& memory)
+    {
+        Byte ZeroPageAddr = Fetch(Cycles, memory);
+        ZeroPageAddr += offset;
+        Cycles--;
+        reg = ReadByte(Cycles, memory, ZeroPageAddr);
+
+    }
+
+    void LoadABS(Byte& reg, s32& Cycles, Memory& memory)
+    {
+        Word AbsAddress = FetchWord(Cycles, memory);
+        reg = ReadByte(Cycles, memory, AbsAddress);
+    }
+
+    void LoadABSOffset(Byte& reg, Byte& offset, s32& Cycles, Memory& memory)
+    {
+        Word AbsAddress = FetchWord(Cycles, memory);
+        Word FinalAddress = AbsAddress + offset;
+
+        if((AbsAddress & 0xFF00) != (FinalAddress & 0xFF00))
+        {
+            Cycles--;
+        }
+
+        reg = ReadByte(Cycles, memory, FinalAddress);
+
+    } 
 
     void LDASetStatus()
     {
         Z = (Acc == 0);
         N = (Acc & 0b10000000) > 0;
+    }
+
+    void LDXSetStatus()
+    {
+        Z = (X == 0);
+        N = (Acc & 0b10000000) > 0;        
     }
 
     int Execute(s32 Cycles, Memory& memory)
@@ -208,55 +256,33 @@ struct CPU
             {
                 case INS_LDA_IM:
                 {
-                    Acc = Fetch(Cycles, memory);
+                    LoadImmediate(Acc, Cycles, memory);
                     LDASetStatus();
                 } break;
                     // Zero Page Access Mode
                 case INS_LDA_ZP:
                 {
-                    Byte ZeroPageAddr = Fetch(Cycles, memory);
-                    Acc = ReadByte(Cycles, memory, ZeroPageAddr);
+                    LoadZP(Acc, Cycles, memory);
                     LDASetStatus();
                 } break;
                 case INS_LDA_ZP_X:
                 {
-                    Byte ZeroPageAddr = Fetch(Cycles, memory);
-                    ZeroPageAddr += X;
-                    Cycles--;
-                    Acc = ReadByte(Cycles, memory, ZeroPageAddr);
+                    LoadZPOffset(Acc, X, Cycles, memory);
                     LDASetStatus();
                 } break;
                 case INS_LDA_ABS:
                 {
-                    Word AbsAddress = FetchWord(Cycles, memory);
-                    Acc = ReadByte(Cycles, memory, AbsAddress);
+                    LoadABS(Acc, Cycles, memory);
                     LDASetStatus();
-
                 } break;
                 case INS_LDA_ABS_X:
                 {
-                    Word AbsAddress = FetchWord(Cycles, memory);
-                    Word FinalAddress = AbsAddress + X;
-
-                    if((AbsAddress & 0xFF00) != (FinalAddress & 0xFF00))
-                    {
-                        Cycles--;
-                    }
-
-                    Acc = ReadByte(Cycles, memory, FinalAddress);
+                    LoadABSOffset(Acc, X, Cycles, memory);
                     LDASetStatus();
-                } break;
+                }break;
                 case INS_LDA_ABS_Y:
                 {
-                    Word AbsAddress = FetchWord(Cycles, memory);
-                    Word FinalAddress = AbsAddress + Y;
-
-                    if((AbsAddress & 0xFF00) != (FinalAddress & 0xFF00))
-                    {
-                        Cycles--;
-                    }
-
-                    Acc = ReadByte(Cycles, memory, FinalAddress);
+                    LoadABSOffset(Acc, Y, Cycles, memory);
                     LDASetStatus();
                 }break;
                     //  6502 Cannot obtain address if indirect vector falls on a page boundary
@@ -265,6 +291,31 @@ struct CPU
                     Word Address = AddrIndirectX(Cycles, memory);
                     Acc = ReadByte(Cycles, memory, Address);
                     LDASetStatus();
+                }break;
+                case INS_LDX_IM:
+                {
+                    LoadImmediate(X, Cycles, memory);
+                    LDXSetStatus();
+                }break;
+                case INS_LDX_ZP:
+                {
+                    LoadZP(X, Cycles, memory);
+                    LDXSetStatus();
+                }break;
+                case INS_LDX_ZP_Y:
+                {
+                    LoadZPOffset(X, Y, Cycles, memory);
+                    LDXSetStatus();
+                }break;
+                case INS_LDX_ABS:
+                {
+                    LoadABS(X, Cycles, memory);
+                    LDXSetStatus();
+                }break;
+                case INS_LDX_ABS_Y:
+                {
+                    LoadABSOffset(X, Y, Cycles, memory);
+                    LDXSetStatus();
                 }break;
                 case INS_JMP_ABS:
                 {
