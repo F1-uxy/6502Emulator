@@ -57,24 +57,32 @@ struct CPU
     Byte Z : 1;
     Byte C : 1;
 
+    Word RESET_VECTOR = 0xFFFC;
+
     // Opcodes
     static constexpr Byte
-            INS_LDA_IM = 0xA9,
-            INS_LDA_ZP = 0xA5,
-            INS_LDA_ZP_X = 0xB5,
-            INS_LDA_ABS = 0xAD,
-            INS_LDA_ABS_X = 0xBD,
-            INS_LDA_ABS_Y = 0xB9,
-            INS_LDA_IND_X = 0xA1,
-            INS_LDA_IND_Y = 0XB1,
-            INS_JMP_ABS = 0x4C,
-            INS_JSR = 0x20,
-            INS_JMP_IND = 0x6C,
-            INS_LDX_IM = 0xA2,
-            INS_LDX_ZP = 0xA6,
-            INS_LDX_ZP_Y = 0xB6,
-            INS_LDX_ABS = 0xAE,
-            INS_LDX_ABS_Y = 0xBE;
+            INS_LDA_IM      = 0xA9,
+            INS_LDA_ZP      = 0xA5,
+            INS_LDA_ZP_X    = 0xB5,
+            INS_LDA_ABS     = 0xAD,
+            INS_LDA_ABS_X   = 0xBD,
+            INS_LDA_ABS_Y   = 0xB9,
+            INS_LDA_IND_X   = 0xA1,
+            INS_LDA_IND_Y   = 0XB1,
+            INS_JMP_ABS     = 0x4C,
+            INS_JSR         = 0x20,
+            INS_JMP_IND     = 0x6C,
+            INS_LDX_IM      = 0xA2,
+            INS_LDX_ZP      = 0xA6,
+            INS_LDX_ZP_Y    = 0xB6,
+            INS_LDX_ABS     = 0xAE,
+            INS_LDX_ABS_Y   = 0xBE,
+            INS_TAX         = 0xAA,
+            INS_TAY         = 0xA8,
+            INS_TSX         = 0xBA,
+            INS_TXA         = 0x8A,
+            INS_TXS         = 0x9A,
+            INS_TYA         = 0x98;
 
 
     //Flags: Carry(C), Negative(N), Overflow(V), Zero(Z), Decimal(D), IRQB_Disable(I)
@@ -83,7 +91,7 @@ struct CPU
 
     void Reset(Memory& memory)
     {
-        PC = 0xFFFC;
+        PC = RESET_VECTOR;
         SP = 0xFF;
         StackPage = 0x01;
         Acc = 0;
@@ -243,7 +251,19 @@ struct CPU
     void LDXSetStatus()
     {
         Z = (X == 0);
-        N = (Acc & 0b10000000) > 0;        
+        N = (X & 0b10000000) > 0;        
+    }
+
+    void TAXSetStatus()
+    {
+        Z = (X == 0);
+        N = (X & 0b10000000) > 0;  
+    }
+
+    void TAYSetStatus()
+    {
+        Z = (Y == 0);
+        N = (Y & 0b10000000) > 0;  
     }
 
     int Execute(s32 Cycles, Memory& memory)
@@ -335,6 +355,41 @@ struct CPU
 
                     PC = SubAddress;
                     Cycles--;
+                } break;
+                case INS_TAX:
+                {
+                    X = Acc;
+                    Cycles -= 2;
+                    TAXSetStatus();
+                } break;
+                case INS_TAY:
+                {
+                    Y = Acc;
+                    Cycles -= 2;
+                    TAYSetStatus();
+                } break;
+                case INS_TSX:
+                {
+                    X = SP;
+                    Cycles -= 2;
+                    TAXSetStatus();
+                } break;
+                case INS_TXA:
+                {
+                    Acc = X;
+                    Cycles -= 2;
+                    LDASetStatus();
+                } break;
+                case INS_TXS:
+                {
+                    SP = X;
+                    Cycles -= 2;
+                } break;
+                case INS_TYA:
+                {
+                    Acc = Y;
+                    Cycles -= 2;
+                    LDASetStatus();
                 } break;
                 default:
                 {

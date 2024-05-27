@@ -19,6 +19,34 @@
 | Absolute    | INS_LDX_ABS     | $AE |
 | Absolute Y  | INS_LDX_ABS_Y   | $BE |
 
+### Transfer Operations:
+
+| TAX     | Transfer Acc to X |     |
+| ------- | ----------------- | --- |
+| Implied | INS_TAX           | $AA |
+
+| TAY     | Transfer Acc to Y |     |
+| ------- | ----------------- | --- |
+| Implied | INS_TAY           | $A8 |
+
+| TSX     | Transfer SP to X  |     |
+| ------- | ----------------- | --- |
+| Implied | INS_TSX           | $BA |
+
+| TXA     | Transfer X to Acc |     |
+| ------- | ----------------- | --- |
+| Implied | INS_TXA           | $8A |
+
+| TXS     | Transfer X to SP |     |
+| ------- | ---------------- | --- |
+| Implied | INS_TXS          | $9A |
+
+| TYA     | Transfer Y to Acc |     |
+| ------- | ----------------- | --- |
+| Implied | INS_TYA           | $98 |
+
+
+
 ### Jumps & Calls
 
 | JMP      | Jump T another Location |     |
