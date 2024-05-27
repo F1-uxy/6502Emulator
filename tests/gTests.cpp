@@ -56,6 +56,23 @@ TEST(CPUTest, LoadValueIntoAccumulator_Immediate)
 	EXPECT_FALSE(CyclesLeft);
 }
 
+TEST(CPUTest, LoadValueIntoXRegister_Immediate)
+{	
+	//LDA_IM Load value into ACC Immediate
+
+	cpu.Reset(memory);
+    memory[0xFFFC] = CPU::INS_LDX_IM;
+    memory[0xFFFD] = 0x00;
+
+    u32 CyclesLeft = cpu.Execute(2, memory);
+
+	EXPECT_EQ(cpu.X, 0x00);
+
+	EXPECT_EQ(cpu.Z, 1);
+	EXPECT_EQ(cpu.N, 0);
+	EXPECT_FALSE(CyclesLeft);
+}
+
 TEST(CPUTest, LoadValueIntoAccumulator)
 {
 	// LDA_ZP can Load Value into Acc
@@ -68,6 +85,23 @@ TEST(CPUTest, LoadValueIntoAccumulator)
     u32 CyclesLeft = cpu.Execute(3, memory);
 
     EXPECT_EQ(cpu.Acc, 0x33);
+    EXPECT_EQ(cpu.Z, 0);
+    EXPECT_EQ(cpu.N, 0);
+    EXPECT_FALSE(CyclesLeft);
+}
+
+TEST(CPUTest, LoadValueIntoXRegister)
+{
+	// LDA_ZP can Load Value into Acc
+
+	cpu.Reset(memory);
+    memory[0xFFFC] = CPU::INS_LDX_ZP;
+    memory[0xFFFD] = 0x42;
+    memory[0x0042] = 0x33;
+
+    u32 CyclesLeft = cpu.Execute(3, memory);
+
+    EXPECT_EQ(cpu.X, 0x33);
     EXPECT_EQ(cpu.Z, 0);
     EXPECT_EQ(cpu.N, 0);
     EXPECT_FALSE(CyclesLeft);
@@ -91,6 +125,35 @@ TEST(CPUTest, LDA_ZP_X_LoadValueIntoAccWithOffsetX) {
 
     // Verify accumulator register is loaded with value at zero page address with offset X
     EXPECT_EQ(cpu.Acc, 0x33);
+
+    // Verify zero flag is clear
+    EXPECT_EQ(cpu.Z, 0);
+
+    // Verify negative flag is clear
+    EXPECT_EQ(cpu.N, 0);
+
+    // Verify no cycles left
+    EXPECT_FALSE(cyclesLeft);
+}
+
+TEST(CPUTest, LDX_ZP_Y_LoadValueIntoXWithOffsetY) {
+    Memory memory;
+    CPU cpu;
+
+    // Reset the CPU
+    cpu.Reset(memory);
+
+    // Set up memory with LDX_ZP_Y instruction and offset Y
+    memory[0xFFFC] = CPU::INS_LDX_ZP_Y; // LDX zero page indexed with Y instruction
+    cpu.Y = 0x0F;
+    memory[0xFFFD] = 0x80; // Address in zero page
+    memory[0x8F] = 0x33; // Value at zero page address with offset Y
+
+    // Execute the CPU instruction
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    // Verify X register is loaded with value at zero page address with offset Y
+    EXPECT_EQ(cpu.X, 0x33);
 
     // Verify zero flag is clear
     EXPECT_EQ(cpu.Z, 0);
@@ -131,6 +194,36 @@ TEST(CPUTest, LDA_ABS_LoadValueIntoAcc) {
     EXPECT_FALSE(cyclesLeft);
 }
 
+TEST(CPUTest, LDX_ABS_LoadValueIntoX) {
+    Memory memory;
+    CPU cpu;
+
+    // Reset the CPU
+    cpu.Reset(memory);
+
+    // Set up memory with LDX_ABS instruction and absolute address
+    memory[0xFFFC] = CPU::INS_LDX_ABS; // LDAXabsolute instruction
+    memory[0xFFFD] = 0x01; // Low byte of address
+    memory[0xFFFE] = 0x02; // High byte of address
+    memory[0x0201] = 0x33; // Value at absolute address
+
+    // Execute the CPU instruction
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    // Verify accumulator register is loaded with value at absolute address
+    EXPECT_EQ(cpu.X, 0x33);
+
+    // Verify zero flag is clear
+    EXPECT_EQ(cpu.Z, 0);
+
+    // Verify negative flag is clear
+    EXPECT_EQ(cpu.N, 0);
+
+    // Verify no cycles left
+    EXPECT_FALSE(cyclesLeft);
+}
+
+
 TEST(CPUTest, LDA_ABS_X_LoadAddressOffsetByX) {
     Memory memory;
     CPU cpu;
@@ -164,6 +257,39 @@ TEST(CPUTest, LDA_ABS_X_LoadAddressOffsetByX) {
     EXPECT_FALSE(cyclesLeft);
 }
 
+TEST(CPUTest, LDX_ABS_Y_LoadAddressOffsetByY) {
+    Memory memory;
+    CPU cpu;
+
+    // Reset the CPU
+    cpu.Reset(memory);
+
+    // Set up memory with LD_ABS_X instruction and absolute address with offset Y
+    memory[0xFFFC] = CPU::INS_LDX_ABS_Y; // LDX absolute indexed with Y instruction
+    memory[0xFFFD] = 0x01; // Low byte of address
+    memory[0xFFFE] = 0x02; // High byte of address
+    cpu.Y = 0x01; // Offset Y
+    memory[0x0202] = 0x44; // Value at absolute address offset by Y
+
+    // Execute the CPU instruction
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    // Verify X register is loaded with value at absolute address offset by Y
+    EXPECT_EQ(cpu.X, 0x44);
+
+    // Verify Y register is not changed
+    EXPECT_EQ(cpu.Y, 0x01);
+
+    // Verify zero flag is clear
+    EXPECT_EQ(cpu.Z, 0);
+
+    // Verify negative flag is clear
+    EXPECT_EQ(cpu.N, 0);
+
+    // Verify no cycles left
+    EXPECT_FALSE(cyclesLeft);
+}
+
 TEST(CPUTest, LDA_ABS_X_LoadAddressOffsetByXJumpPage)
 {
 	cpu.Reset(memory);
@@ -177,6 +303,26 @@ TEST(CPUTest, LDA_ABS_X_LoadAddressOffsetByXJumpPage)
 
 	EXPECT_EQ(cpu.Acc, 0x44);
 	EXPECT_EQ(cpu.X, 0xFF);
+	EXPECT_EQ(cpu.Z, 0);
+	EXPECT_EQ(cpu.N, 0);
+
+	EXPECT_EQ(cyclesLeft, 0);
+
+}
+
+TEST(CPUTest, LDX_ABS_Y_LoadAddressOffsetByYJumpPage)
+{
+	cpu.Reset(memory);
+	memory[0xFFFC] = CPU::INS_LDX_ABS_Y;
+	memory[0xFFFD] = 0x01;
+	memory[0xFFFE] = 0x00;
+	cpu.Y = 0xFF;
+	memory[0x100] = 0x44; //0x0001 + 0xFF = 0x100 & crosses page boundary
+
+	u32 cyclesLeft = cpu.Execute(5, memory);
+
+	EXPECT_EQ(cpu.X, 0x44);
+	EXPECT_EQ(cpu.Y, 0xFF);
 	EXPECT_EQ(cpu.Z, 0);
 	EXPECT_EQ(cpu.N, 0);
 
