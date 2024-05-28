@@ -1,5 +1,7 @@
 #include <iostream>
-#include "6502main.h"
+#include "CPU.h"
+#include "Memory.h"
+
 
 int main()
 {
