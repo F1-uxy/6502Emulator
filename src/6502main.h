@@ -82,7 +82,16 @@ struct CPU
             INS_TSX         = 0xBA,
             INS_TXA         = 0x8A,
             INS_TXS         = 0x9A,
-            INS_TYA         = 0x98;
+            INS_TYA         = 0x98,
+            INS_AND_IM      = 0x29,
+            INS_AND_ZP      = 0x25,
+            INS_AND_ZP_X    = 0x35,
+            INS_AND_ABS     = 0x2D,
+            INS_AND_ABS_X   = 0x3D,
+            INS_AND_ABS_Y   = 0x39,
+            INS_AND_IND_X   = 0x21,
+            INS_AND_IND_Y   = 0x31;
+  
 
 
     //Flags: Carry(C), Negative(N), Overflow(V), Zero(Z), Decimal(D), IRQB_Disable(I)
@@ -196,23 +205,40 @@ struct CPU
     Word AddrIndirectX(s32& Cycles, Memory& memory)
     {
         Byte ZPAddress = Fetch(Cycles, memory);
-        ZPAddress += X;
-        Cycles--;
+        ZPAddress = (ZPAddress + X) & 0xFF;
+        Cycles --;
         Word ReturnAddress = ReadWord(Cycles, memory, ZPAddress);
         return ReturnAddress;
     }
 
+    // Load Word address value stored in address given by ZPPointer value offset by Y into given register
+    void AddrIndirectY(Byte& reg, s32& Cycles, Memory& memory)
+    {
+        Word ZPPointer = Fetch(Cycles, memory);
+        Word baseAddress = ReadWord(Cycles, memory, ZPPointer);
+        Word effectiveAddress = baseAddress + Y;
+        
+        if((baseAddress & 0xFF00) != (effectiveAddress & 0xFF00))
+        {
+            Cycles--;
+        }
+        reg =  ReadByte(Cycles, memory, effectiveAddress);
+    }
+
+    // Load Immediate value into given register
     inline void LoadImmediate(Byte& reg, s32& Cycles, Memory& memory)
     {
         reg = Fetch(Cycles, memory);
     }
 
+    // Load Byte address from Zero Page 0x00__ into given register
     void LoadZP(Byte& reg, s32& Cycles, Memory& memory)
     {
         Byte ZeroPageAddr = Fetch(Cycles, memory);
         reg = ReadByte(Cycles, memory, ZeroPageAddr);
     }
 
+    // Load Byte address from Zero Page 0x00__ with Byte offset into given register
     void LoadZPOffset(Byte& reg, Byte& offset, s32& Cycles, Memory& memory)
     {
         Byte ZeroPageAddr = Fetch(Cycles, memory);
@@ -222,12 +248,14 @@ struct CPU
 
     }
 
+    // Load Word address from next address in memory to given register
     void LoadABS(Byte& reg, s32& Cycles, Memory& memory)
     {
         Word AbsAddress = FetchWord(Cycles, memory);
         reg = ReadByte(Cycles, memory, AbsAddress);
     }
 
+    // Load Word address from next address with Byte offset to given register
     void LoadABSOffset(Byte& reg, Byte& offset, s32& Cycles, Memory& memory)
     {
         Word AbsAddress = FetchWord(Cycles, memory);
@@ -266,6 +294,12 @@ struct CPU
         N = (Y & 0b10000000) > 0;  
     }
 
+    void ANDSetStatus()
+    {
+        Z = (Acc == 0);
+        N = (Acc & 0b10000000) > 0;
+    }
+
     int Execute(s32 Cycles, Memory& memory)
     {
         while (Cycles > 0)
@@ -302,6 +336,7 @@ struct CPU
                 }break;
                 case INS_LDA_ABS_Y:
                 {
+
                     LoadABSOffset(Acc, Y, Cycles, memory);
                     LDASetStatus();
                 }break;
@@ -391,6 +426,61 @@ struct CPU
                     Cycles -= 2;
                     LDASetStatus();
                 } break;
+                case INS_AND_IM:
+                {
+                    Byte inputByte; 
+                    LoadImmediate(inputByte, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
+                case INS_AND_ZP:
+                {
+                    Byte inputByte;
+                    LoadZP(inputByte, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
+                case INS_AND_ZP_X:
+                {
+                    Byte inputByte;
+                    LoadZPOffset(inputByte, X, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
+                case INS_AND_ABS:
+                {
+                    Byte inputByte;
+                    LoadABS(inputByte, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
+                case INS_AND_ABS_X:
+                {
+                    Byte inputByte;
+                    LoadABSOffset(inputByte, X, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
+                case INS_AND_ABS_Y:
+                {
+                    Byte inputByte;
+                    LoadABSOffset(inputByte, Y, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
+                case INS_AND_IND_X:
+                {
+                    Word indirectAddress = AddrIndirectX(Cycles, memory);
+                    Acc = Acc & ReadByte(Cycles, memory, indirectAddress);
+                    ANDSetStatus();
+                }break;
+                case INS_AND_IND_Y:
+                {
+                    Byte inputByte;
+                    AddrIndirectY(inputByte, Cycles, memory);
+                    Acc = Acc & inputByte;
+                    ANDSetStatus();
+                }break;
                 default:
                 {
                     printf("Instruction not found: %d \n", Ins);

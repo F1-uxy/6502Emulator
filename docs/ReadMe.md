@@ -1,5 +1,8 @@
 # 6502 Emulator
 
+For first time builds:
+Run `cmake ..` in the root directory to initialise the build folder
+
 To build:
 Run `cmake --build .` in the `build` directory
 

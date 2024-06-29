@@ -2,14 +2,14 @@
 
 ### Load/Store Operations:
 
-| LDA          | Load Accumulator |     |
-| ------------ | ---------------- | --- |
-| Immediate    | INS_LDA_IM       | $A9 |
-| Zero Page    | INS_LDA_ZP       | $A5 |
-| Zero Page X  | INS_LDA_ZP_X     | $B5 |
-| Absolute     | INS_LDA_ABS      | $AD |
-| Absolute X   | INS_LDA_ABS_X    | $BD |
-| (Indirect) X | INS_LDA_IND_X    | $A1 |
+| LDA          | Load Accumulator |     | Tested? |
+| ------------ | ---------------- | --- | ------- |
+| Immediate    | INS_LDA_IM       | $A9 |    T    |
+| Zero Page    | INS_LDA_ZP       | $A5 |    T    |
+| Zero Page X  | INS_LDA_ZP_X     | $B5 |    T    |
+| Absolute     | INS_LDA_ABS      | $AD |    T    |
+| Absolute X   | INS_LDA_ABS_X    | $BD |    T    |
+| (Indirect) X | INS_LDA_IND_X    | $A1 |    T    |
 
 | LDX         | Load X Register |     |
 | ----------- | --------------- | --- |
@@ -58,3 +58,16 @@
 | -------- | ------------------ | --- |
 | Absolute | INS_JSR            | $20 |
 
+
+### Logical Operations:
+
+| AND          | Bitwise AND      |     | Tested? |
+| ------------ | ---------------- | --- | ------- |
+| Immediate    | INS_AND_IM       | $29 |    T    |
+| Zero Page    | INS_AND_ZP       | $25 |    T    |
+| Zero Page X  | INS_AND_ZP_X     | $35 |    T    |
+| Absolute     | INS_AND_ABS      | $2D |    T    |
+| Absolute X   | INS_AND_ABS_X    | $3D |    T    |
+| Absolute Y   | INS_AND_ABS_Y    | $39 |    T    |
+| (Indirect) X | INS_AND_IND_X    | $21 |    T    |
+| (Indirect) Y | INS_AND_IND_Y    | $31 |    T    |

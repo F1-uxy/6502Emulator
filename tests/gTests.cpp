@@ -420,3 +420,674 @@ TEST(CPUTest, JSR_PushAddressToStackAndSetPC) {
     EXPECT_EQ(cyclesLeft, 0);
 }
 
+TEST(CPUTest, AND_IM_BitwiseANDAccImmediate)
+{
+    Memory memory;
+    CPU cpu;
+
+    //Reset the CPUTest
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IM;
+    memory[0xFFFD] = 0x11;
+
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(2, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccImmediate_Negative)
+{
+    Memory memory;
+    CPU cpu;
+
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IM;
+    memory[0xFFFD] = 0x80;
+
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(2, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccImmediate_Zero)
+{
+    Memory memory;
+    CPU cpu;
+
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IM;
+    memory[0xFFFD] = 0xF0;
+
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(2, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccZP)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ZP;
+    memory[0xFFFD] = 0x05;
+    memory[0x0005] = 0x11;
+
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(3, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccZP_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ZP;
+    memory[0xFFFD] = 0x05;
+    memory[0x0005] = 0xF0;
+
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(3, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccZP_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ZP;
+    memory[0xFFFD] = 0x05;
+    memory[0x0005] = 0x80;
+
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(3, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccZP_X)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ZP_X;
+    memory[0xFFFD] = 0x05;
+    memory[0x0005] = 0x11;
+
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccZP_X_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ZP_X;
+    memory[0xFFFD] = 0x05;
+    memory[0x0005] = 0x80;
+
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccZP_X_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ZP_X;
+    memory[0xFFFD] = 0x05;
+    memory[0x0005] = 0xF0;
+
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4030] = 0x11;
+
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4030] = 0xF0;
+
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4030] = 0x80;
+
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_X)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_X;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4035] = 0x11;
+
+
+    cpu.X   = 0x05;
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_X_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_X;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4035] = 0xF0;
+
+
+    cpu.X   = 0x05;
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_X_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_X;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4035] = 0x80;
+
+    
+    cpu.X   = 0x05;
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_X_PageCrossed)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_X;
+    memory[0xFFFD] = 0xFF;
+    memory[0xFFFE] = 0x40;
+    memory[0x4101] = 0x11;
+
+
+    cpu.X   = 0x02;
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(5, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_Y)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_Y;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4035] = 0x11;
+
+
+    cpu.Y   = 0x05;
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_Y_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_Y;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4035] = 0xF0;
+
+
+    cpu.Y   = 0x05;
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_Y_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_Y;
+    memory[0xFFFD] = 0x30;
+    memory[0xFFFE] = 0x40;
+    memory[0x4035] = 0x80;
+
+    
+    cpu.Y   = 0x05;
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(4, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccABS_Y_PageCrossed)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_ABS_Y;
+    memory[0xFFFD] = 0xFF;
+    memory[0xFFFE] = 0x40;
+    memory[0x4101] = 0x11;
+
+
+    cpu.Y   = 0x02;
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(5, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_X)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_X;
+    memory[0xFFFD] = 0x20;
+    memory[0x0024] = 0x30;
+    memory[0x0025] = 0x40;
+    memory[0x4030] = 0x11;
+
+    cpu.X   = 0x04;
+    cpu.Acc = 0x51;
+
+    u32 cyclesLeft = cpu.Execute(6, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_X_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_X;
+    memory[0xFFFD] = 0x20;
+    memory[0x0024] = 0x30;
+    memory[0x0025] = 0x40;
+    memory[0x4030] = 0xF0;
+
+    cpu.X   = 0x04;
+    cpu.Acc = 0x0F;
+
+    u32 cyclesLeft = cpu.Execute(6, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_X_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_X;
+    memory[0xFFFD] = 0x20;
+    memory[0x0024] = 0x30;
+    memory[0x0025] = 0x40;
+    memory[0x4030] = 0x80;
+
+    cpu.X   = 0x04;
+    cpu.Acc = 0xFF;
+
+    u32 cyclesLeft = cpu.Execute(6, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_Y)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_Y;
+    memory[0xFFFD] = 0x20;
+    memory[0x0020] = 0x30;
+    memory[0x0021] = 0x40;
+    memory[0x4035] = 0x11;
+
+    cpu.Y   = 0x05;
+    cpu.Acc = 0x51;
+
+    int32_t cyclesLeft = cpu.Execute(5, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_Y_Negative)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_Y;
+    memory[0xFFFD] = 0x20;
+    memory[0x0020] = 0x30;
+    memory[0x0021] = 0x40;
+    memory[0x4035] = 0x80;
+
+    cpu.Y   = 0x05;
+    cpu.Acc = 0xFF;
+
+    int32_t cyclesLeft = cpu.Execute(5, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x80);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 1);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_Y_Zero)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_Y;
+    memory[0xFFFD] = 0x20;
+    memory[0x0020] = 0x30;
+    memory[0x0021] = 0x40;
+    memory[0x4035] = 0xF0;
+
+    cpu.Y   = 0x05;
+    cpu.Acc = 0x0F;
+
+    int32_t cyclesLeft = cpu.Execute(5, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x00);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 1);
+
+    EXPECT_EQ(cpu.N, 0);
+}
+
+TEST(CPUTest, AND_IM_BitewiseANDAccIND_Y_Page_Crossed)
+{
+    Memory memory;
+    CPU cpu;
+    cpu.Reset(memory);
+
+    memory[0xFFFC] = CPU::INS_AND_IND_Y;
+    memory[0xFFFD] = 0x20;
+    memory[0x0020] = 0xFF;
+    memory[0x0021] = 0x40;
+    memory[0x4104] = 0x11;
+
+    cpu.Y   = 0x05;
+    cpu.Acc = 0x51;
+
+    int32_t cyclesLeft = cpu.Execute(6, memory);
+
+    EXPECT_EQ(cpu.Acc, 0x11);
+
+    EXPECT_EQ(cyclesLeft, 0);
+
+    EXPECT_EQ(cpu.Z, 0);
+
+    EXPECT_EQ(cpu.N, 0);
+}
