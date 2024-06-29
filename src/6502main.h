@@ -270,34 +270,44 @@ struct CPU
 
     } 
 
+    void SetZeroFlag(Byte reg)
+    {
+        Z = (reg == 0);
+    }
+
+    void SetNegativeFlag(Byte reg)
+    {
+        N = (reg & 0b10000000) > 0;
+    }
+
     void LDASetStatus()
     {
-        Z = (Acc == 0);
-        N = (Acc & 0b10000000) > 0;
+        SetZeroFlag(Acc);
+        SetNegativeFlag(Acc);
     }
 
     void LDXSetStatus()
     {
-        Z = (X == 0);
-        N = (X & 0b10000000) > 0;        
+        SetZeroFlag(X);
+        SetNegativeFlag(X);
     }
 
     void TAXSetStatus()
     {
-        Z = (X == 0);
-        N = (X & 0b10000000) > 0;  
+        SetZeroFlag(X);
+        SetNegativeFlag(X);
     }
 
     void TAYSetStatus()
     {
-        Z = (Y == 0);
-        N = (Y & 0b10000000) > 0;  
+        SetZeroFlag(Y);
+        SetNegativeFlag(Y);
     }
 
     void ANDSetStatus()
     {
-        Z = (Acc == 0);
-        N = (Acc & 0b10000000) > 0;
+        SetZeroFlag(Acc);
+        SetNegativeFlag(Acc);
     }
 
     int Execute(s32 Cycles, Memory& memory)
