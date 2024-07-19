@@ -310,6 +310,12 @@ struct CPU
         SetNegativeFlag(Acc);
     }
 
+    void XORSetStatus()
+    {
+        SetZeroFlag(Acc);
+        SetNegativeFlag(Acc);
+    }
+
     int Execute(s32 Cycles, Memory& memory)
     {
         while (Cycles > 0)
@@ -395,9 +401,7 @@ struct CPU
                 case INS_JSR:
                 {
                     Word SubAddress = FetchWord(Cycles, memory);
-
                     PushPCMinusOneToStack(Cycles, memory);
-
                     PC = SubAddress;
                     Cycles--;
                 } break;
@@ -491,6 +495,12 @@ struct CPU
                     Acc = Acc & inputByte;
                     ANDSetStatus();
                 }break;
+                case INS_XOR_IM:
+                {
+                    Byte inputByte = Fetch(Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }
                 default:
                 {
                     printf("Instruction not found: %d \n", Ins);
