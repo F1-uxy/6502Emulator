@@ -71,3 +71,26 @@
 | Absolute Y   | INS_AND_ABS_Y    | $39 |    T    |
 | (Indirect) X | INS_AND_IND_X    | $21 |    T    |
 | (Indirect) Y | INS_AND_IND_Y    | $31 |    T    |
+
+| XOR          | Bitwise XOR      |     | Tested? |
+| ------------ | ---------------- | --- | ------- |
+| Immediate    | INS_XOR_IM       | $49 |    F    |
+| Zero Page    | INS_XOR_ZP       | $45 |    F    |
+| Zero Page X  | INS_XOR_ZP_X     | $55 |    F    |
+| Absolute     | INS_XOR_ABS      | $4D |    F    |
+| Absolute X   | INS_XOR_ABS_X    | $5D |    F    |
+| Absolute Y   | INS_XOR_ABS_Y    | $59 |    F    |
+| (Indirect) X | INS_XOR_IND_X    | $41 |    F    |
+| (Indirect) Y | INS_XOR_IND_Y    | $51 |    F    |
+
+| IOR          | Bitwise IOR      |     | Tested? |
+| ------------ | ---------------- | --- | ------- |
+| Immediate    | INS_IOR_IM       | $09 |    F    |
+| Zero Page    | INS_IOR_ZP       | $05 |    F    |
+| Zero Page X  | INS_IOR_ZP_X     | $15 |    F    |
+| Absolute     | INS_IOR_ABS      | $0D |    F    |
+| Absolute X   | INS_IOR_ABS_X    | $1D |    F    |
+| Absolute Y   | INS_IOR_ABS_Y    | $19 |    F    |
+| (Indirect) X | INS_IOR_IND_X    | $01 |    F    |
+| (Indirect) Y | INS_IOR_IND_Y    | $11 |    F    |
+

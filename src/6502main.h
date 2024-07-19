@@ -90,7 +90,23 @@ struct CPU
             INS_AND_ABS_X   = 0x3D,
             INS_AND_ABS_Y   = 0x39,
             INS_AND_IND_X   = 0x21,
-            INS_AND_IND_Y   = 0x31;
+            INS_AND_IND_Y   = 0x31,
+            INS_XOR_IM      = 0x49,
+            INS_XOR_ZP      = 0x45,
+            INS_XOR_ZP_X    = 0x55,
+            INS_XOR_ABS     = 0x4D,
+            INS_XOR_ABS_X   = 0x5D,
+            INS_XOR_ABS_Y   = 0x59,
+            INS_XOR_IND_X   = 0x41,
+            INS_XOR_IND_Y   = 0x51,
+            INS_IOR_IM      = 0x09,
+            INS_IOR_ZP      = 0x05,
+            INS_IOR_ZP_X    = 0x15,
+            INS_IOR_ABS     = 0x0D,
+            INS_IOR_ABS_X   = 0x1D,
+            INS_IOR_ABS_Y   = 0x19,
+            INS_IOR_IND_X   = 0x01,
+            INS_IOR_IND_Y   = 0x11;
   
 
 
@@ -316,6 +332,12 @@ struct CPU
         SetNegativeFlag(Acc);
     }
 
+    void IORSetStatus()
+    {
+        SetZeroFlag(Acc);
+        SetNegativeFlag(Acc);
+    }
+
     int Execute(s32 Cycles, Memory& memory)
     {
         while (Cycles > 0)
@@ -497,9 +519,115 @@ struct CPU
                 }break;
                 case INS_XOR_IM:
                 {
-                    Byte inputByte = Fetch(Cycles, memory);
+                    Byte inputByte;
+                    LoadABS(inputByte, Cycles, memory);
                     Acc = Acc ^ inputByte;
                     XORSetStatus();
+                }break;
+                case INS_XOR_ZP:
+                {
+                    Byte inputByte;
+                    LoadImmediate(inputByte, Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_XOR_ZP_X:
+                {
+                    Byte inputByte;
+                    LoadZPOffset(inputByte, X, Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_XOR_ABS:
+                {
+                    Byte inputByte;
+                    LoadABS(inputByte, Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_XOR_ABS_X:
+                {
+                    Byte inputByte;
+                    LoadABSOffset(inputByte, X, Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_XOR_ABS_Y:
+                {
+                    Byte inputByte;
+                    LoadABSOffset(inputByte, Y, Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_XOR_IND_X:
+                {
+                    Word indirectAddress = AddrIndirectX(Cycles, memory);
+                    Byte inputByte = ReadByte(Cycles, memory, indirectAddress);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_XOR_IND_Y:
+                {
+                    Byte inputByte;
+                    AddrIndirectY(inputByte, Cycles, memory);
+                    Acc = Acc ^ inputByte;
+                    XORSetStatus();
+                }break;
+                case INS_IOR_IM:
+                {
+                    Byte inputByte;
+                    LoadImmediate(inputByte, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_ZP:
+                {
+                    Byte inputByte;
+                    LoadZP(inputByte, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_ZP_X:
+                {
+                    Byte inputByte;
+                    LoadZPOffset(inputByte, X, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_ABS:
+                {
+                    Byte inputByte;
+                    LoadABS(inputByte, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_ABS_X:
+                {
+                    Byte inputByte;
+                    LoadABSOffset(inputByte, X, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_ABS_Y:
+                {
+                    Byte inputByte;
+                    LoadABSOffset(inputByte, Y, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_IND_X:
+                {
+                    Word indirectAddress = AddrIndirectX(Cycles, memory);
+                    Byte inputByte = ReadByte(Cycles, memory, indirectAddress);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
+                }break;
+                case INS_IOR_IND_Y:
+                {
+                    Byte inputByte;
+                    AddrIndirectY(inputByte, Cycles, memory);
+                    Acc = Acc | inputByte;
+                    IORSetStatus();
                 }
                 default:
                 {
