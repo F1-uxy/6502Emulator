@@ -646,4 +646,6 @@ struct CPU
 
 };
 
+void loadProgram(const std::string&, Memory&);
+
 #endif CPUEMULATOR_6502MAIN_H

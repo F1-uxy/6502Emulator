@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/6502EmulatorTests.dir/gTests.cpp.o -o ../bin/6502EmulatorTests  ../lib/libgtest_main.a ../lib/libgtest.a 
