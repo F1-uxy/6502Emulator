@@ -13,7 +13,37 @@ using Word = unsigned short;
 using u32 = unsigned int;
 using s32 = signed int;
 
+static constexpr Byte FLAG_DEBUG    = 0x01;
+static constexpr Byte FLAG_INFINITE = 0x02;
+static constexpr Byte FLAG_IGNORE   = 0x04;
 
+struct Settings {
+    Byte flags = 0;
+
+    void setFlag(Byte flag)
+    {
+        flags |= flag;
+    }
+
+    void clearFlag(Byte flag)
+    {
+        flag &= ~flag;
+    }
+
+    bool hasFlag(Byte flag)
+    {
+        return (flag & flags) != 0;
+    }
+
+    bool operator|(const Byte other) const {
+        return this->flags | other;
+    }
+
+    Settings& operator|=(const Byte other) {
+        this->flags |= other;
+        return *this;
+    }
+};
 
 struct Memory
 {
@@ -41,7 +71,6 @@ struct Memory
 
 struct CPU
 {
-
     Word PC; //Program Counter
     Byte SP; //Stack Pointer
     Byte StackPage;
@@ -340,7 +369,13 @@ struct CPU
 
     int Execute(s32 Cycles, Memory& memory)
     {
-        while (Cycles > 0)
+        Settings defaultSettings;
+        return Execute(Cycles, memory, 0);
+    }
+
+    int Execute(s32 Cycles, Memory& memory, Byte settings)
+    {
+        while (Cycles > 0 || settings | FLAG_INFINITE)
         {
             Byte Ins = Fetch(Cycles, memory);
 
@@ -633,7 +668,8 @@ struct CPU
                 {
                     printf("Instruction not found: %d \n", Ins);
                     printf("PC value: %d \n", PC);
-                    return -1;
+
+                    if(!(settings & FLAG_IGNORE)) return -1;
                 } break;
             }
 
@@ -646,6 +682,6 @@ struct CPU
 
 };
 
-void loadProgram(const std::string&, Memory&);
+void loadProgram(const std::string&, Memory&, Word);
 
 #endif CPUEMULATOR_6502MAIN_H
