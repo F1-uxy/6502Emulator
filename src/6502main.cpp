@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
         std::cerr << "I need some arguments!" << std::endl;
         return 1;
     }
+
     std::string filename = argv[1]; 
     Word offset = 0x0000;
     loadProgram(filename, memory, offset);
@@ -32,6 +33,9 @@ int main(int argc, char *argv[])
     Byte settings = 0;
     settings |= FLAG_INFINITE; 
     //settings |= FLAG_IGNORE;
+    settings |= FLAG_DEBUG;
+    settings |= FLAG_STEP;
+    settings |= FLAG_FLAGS;
 
     u32 cyclesLeft = cpu.Execute(-1, memory, settings);
 

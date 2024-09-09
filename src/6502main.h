@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 using Byte = unsigned char;
 using Word = unsigned short;
 
@@ -16,6 +14,8 @@ using s32 = signed int;
 static constexpr Byte FLAG_DEBUG    = 0x01;
 static constexpr Byte FLAG_INFINITE = 0x02;
 static constexpr Byte FLAG_IGNORE   = 0x04;
+static constexpr Byte FLAG_STEP     = 0x08;
+static constexpr Byte FLAG_FLAGS    = 0x10;
 
 struct Settings {
     Byte flags = 0;
@@ -141,7 +141,6 @@ struct CPU
 
     //Flags: Carry(C), Negative(N), Overflow(V), Zero(Z), Decimal(D), IRQB_Disable(I)
     // N V 1 B D I Z C
-
 
     void Reset(Memory& memory)
     {
@@ -315,6 +314,17 @@ struct CPU
 
     } 
 
+    void printDebug()
+    {
+        printf("PC: %#04x SP: %#04x Acc: %#04x \n", PC, SP, Acc);
+    }
+
+    void printFlags()
+    {
+        printf("X Y N V B D I Z C\n");
+        printf("%d %d %d %d %d %d %d %d %d\n", X, Y, N, V, B, D, I, Z, C);
+    }
+
     void SetZeroFlag(Byte reg)
     {
         Z = (reg == 0);
@@ -378,7 +388,10 @@ struct CPU
         while (Cycles > 0 || settings | FLAG_INFINITE)
         {
             Byte Ins = Fetch(Cycles, memory);
-
+            if(settings & FLAG_STEP){
+                //while(!std::cin.get());
+                std::cin.get();
+            }
             switch (Ins)
             {
                 case INS_LDA_IM:
@@ -672,6 +685,9 @@ struct CPU
                     if(!(settings & FLAG_IGNORE)) return -1;
                 } break;
             }
+            
+            if(settings & FLAG_DEBUG) printDebug();
+            if(settings & FLAG_FLAGS) printFlags();
 
         }
 
