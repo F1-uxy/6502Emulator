@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 using Byte = unsigned char;
 using Word = unsigned short;
@@ -135,7 +136,9 @@ struct CPU
             INS_IOR_ABS_X   = 0x1D,
             INS_IOR_ABS_Y   = 0x19,
             INS_IOR_IND_X   = 0x01,
-            INS_IOR_IND_Y   = 0x11;
+            INS_IOR_IND_Y   = 0x11,
+            INS_BIT_ZP      = 0x24,
+            INS_BIT_ABS     = 0x2C;
   
 
 
@@ -316,7 +319,7 @@ struct CPU
 
     void printDebug()
     {
-        printf("PC: %#04x SP: %#04x Acc: %#04x \n", PC, SP, Acc);
+        printf("PC: %#04x SP: %#04x Acc: %#04x\n", PC, SP, Acc);
     }
 
     void printFlags()
@@ -333,6 +336,11 @@ struct CPU
     void SetNegativeFlag(Byte reg)
     {
         N = (reg & 0b10000000) > 0;
+    }
+
+    void SetOverflowFlag(Byte reg)
+    {
+        V = (reg & 0b01000000) > 0;
     }
 
     void LDASetStatus()
@@ -375,6 +383,13 @@ struct CPU
     {
         SetZeroFlag(Acc);
         SetNegativeFlag(Acc);
+    }
+
+    void BITSetStatus(Byte result)
+    {
+        SetZeroFlag(result);
+        SetOverflowFlag(result);
+        SetNegativeFlag(result);
     }
 
     int Execute(s32 Cycles, Memory& memory)
@@ -676,7 +691,23 @@ struct CPU
                     AddrIndirectY(inputByte, Cycles, memory);
                     Acc = Acc | inputByte;
                     IORSetStatus();
-                }
+                }break;
+                case INS_BIT_ZP:
+                {
+                    Byte inputByte;
+                    Byte result;
+                    LoadZP(inputByte, Cycles, memory);
+                    result = inputByte & Acc;
+                    BITSetStatus(result);
+                }break;
+                case INS_BIT_ABS:
+                {
+                    Word inputAddr;
+                    Byte inputByte;
+                    inputByte = ReadByte(Cycles, memory, inputAddr);
+                    Byte result = inputByte & Acc;
+                    BITSetStatus(result);
+                }break;
                 default:
                 {
                     printf("Instruction not found: %d \n", Ins);
@@ -685,7 +716,7 @@ struct CPU
                     if(!(settings & FLAG_IGNORE)) return -1;
                 } break;
             }
-            
+            printf ("\033\143");
             if(settings & FLAG_DEBUG) printDebug();
             if(settings & FLAG_FLAGS) printFlags();
 

@@ -49,14 +49,14 @@
 
 ### Jumps & Calls
 
-| JMP      | Jump T another Location |     |
-| -------- | ----------------------- | --- |
-| Absolute | INS_JMP_ABS             | $4C |
-| Indirect | INS_JMP_IND             | $6C |
+| JMP      | Jump T another Location |     | Tested? |
+| -------- | ----------------------- | --- | ------- |
+| Absolute | INS_JMP_ABS             | $4C | T       |
+| Indirect | INS_JMP_IND             | $6C | T       |
 
-| JSR      | Jump to SubRoutine |     |
-| -------- | ------------------ | --- |
-| Absolute | INS_JSR            | $20 |
+| JSR      | Jump to SubRoutine |     | Tested? |
+| -------- | ------------------ | --- | ------- |
+| Absolute | INS_JSR            | $20 | T       |
 
 
 ### Logical Operations:
@@ -94,3 +94,7 @@
 | (Indirect) X | INS_IOR_IND_X    | $01 |    F    |
 | (Indirect) Y | INS_IOR_IND_Y    | $11 |    F    |
 
+| BIT       | Bit Test    |     | Tested? |
+| --------- | ----------- | --- | ------- |
+| Zero Page | INS_BIT_ZP  | $24 | F       |
+| Absolute  | INS_BIT_ABS | $2C | F       |

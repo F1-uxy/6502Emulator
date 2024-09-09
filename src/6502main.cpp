@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     //Settings settings;
     Byte settings = 0;
     settings |= FLAG_INFINITE; 
-    //settings |= FLAG_IGNORE;
+    settings |= FLAG_IGNORE;
     settings |= FLAG_DEBUG;
     settings |= FLAG_STEP;
     settings |= FLAG_FLAGS;
