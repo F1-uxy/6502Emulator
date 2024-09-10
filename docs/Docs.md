@@ -58,6 +58,11 @@
 | -------- | ------------------ | --- | ------- |
 | Absolute | INS_JSR            | $20 | T       |
 
+| RTS     | Return from subreoutine |     | Tested? |
+| ------- | ----------------------- | --- | ------- |
+| Implied | INS_RTS                 | $60 | F       |
+
+
 
 ### Logical Operations:
 
