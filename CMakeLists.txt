@@ -4,7 +4,16 @@ project(6502Emulator)
 # Set the output directory for executables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-add_executable(6502Emulator "src/6502main.cpp")
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
+set(SOURCES 
+    "src/6502main.cpp"
+    "src/CPU.cpp"
+    "src/Memory.cpp"
+    "src/Loader.cpp"
+    )
+
+add_executable(6502Emulator ${SOURCES})
 
 include(FetchContent)
 FetchContent_Declare(
