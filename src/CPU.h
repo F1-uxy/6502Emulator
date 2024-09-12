@@ -13,7 +13,7 @@ public:
     using instruction_func = void (CPU::*)();
 
     explicit CPU(Memory& mem);
-    
+
     Word PC; //Program Counter
     Byte SP; //Stack Pointer
     Byte StackPage;
@@ -44,18 +44,19 @@ private:
     Memory& memory;
 
     instruction_func opcode_lut[256] = {
-        /*      0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F*/
-        /*1*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*2*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*3*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*4*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*5*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*6*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
+        /*          0          1          2          3          4          5          6          7          8          9          A          B          C          D          E          F*/
+        /*0*/ &CPU::NAN, &CPU::IOR_IND_X, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::IOR_ZP, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::IOR_IM, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::IOR_ABS, &CPU::NAN, &CPU::NAN,
+        /*1*/ &CPU::NAN, &CPU::IOR_IND_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::IOR_ZP_X, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::IOR_ABS_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::IOR_ABS_X, &CPU::NAN, &CPU::NAN,
+        /*2*/ &CPU::JSR, &CPU::AND_IND_X, &CPU::NAN, &CPU::NAN, &CPU::BIT_ZP, &CPU::AND_ZP, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::AND_IM, &CPU::NAN, &CPU::NAN, &CPU::BIT_ABS, &CPU::AND_ABS, &CPU::NAN, &CPU::NAN,
+        /*3*/ &CPU::NAN, &CPU::AND_IND_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::AND_ZP_X, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::AND_ABS_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::AND_ABS_X, &CPU::NAN, &CPU::NAN,
+        /*4*/ &CPU::NAN, &CPU::XOR_IND_X, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::XOR_ZP, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::XOR_IM, &CPU::NAN, &CPU::NAN, &CPU::JMP_ABS, &CPU::XOR_ABS, &CPU::NAN, &CPU::NAN,
+        /*5*/ &CPU::NAN, &CPU::XOR_IND_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::XOR_ZP_X, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::XOR_ABS_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::XOR_ABS_X, &CPU::NAN, &CPU::NAN,
+        /*6*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::JMP_IND, &CPU::NAN, &CPU::NAN, &CPU::NAN,
         /*7*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*8*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*9*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*A*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
-        /*B*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
+        /*8*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::TXA, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
+        /*9*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::TYA, &CPU::NAN, &CPU::TXS, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
+        /*A*/ &CPU::NAN, &CPU::LDA_IND_X, &CPU::LDX_IM, &CPU::NAN, &CPU::NAN, &CPU::LDA_ZP, &CPU::LDX_ZP, &CPU::NAN, &CPU::TAY, &CPU::LDA_IM, &CPU::TAX, &CPU::NAN, &CPU::NAN, &CPU::LDA_ABS, &CPU::LDX_ABS, &CPU::NAN,
+        /*B*/ &CPU::NAN, &CPU::LDA_IND_Y, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::LDA_ZP_X, &CPU::LDX_ZP_Y, &CPU::NAN, &CPU::NAN, &CPU::LDA_ABS_Y, &CPU::TSX, &CPU::NAN, &CPU::NAN, &CPU::LDA_ABS_X, &CPU::LDX_ABS_Y, &CPU::NAN,
         /*C*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
         /*D*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,
         /*E*/ &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN, &CPU::NAN,

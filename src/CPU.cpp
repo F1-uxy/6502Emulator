@@ -292,235 +292,346 @@ void CPU::LDA_IM()
 
 void CPU::LDA_ZP()
 {
-
+    LoadZP(Acc, Cycles, memory);
+    LDASetStatus();
 }
 
 void CPU::LDA_ZP_X()
 {
-
+    LoadZPOffset(Acc, X, Cycles, memory);
+    LDASetStatus();
 }
 
 void CPU::LDA_ABS()
 {
-
+    LoadABS(Acc, Cycles, memory);
+    LDASetStatus();
 }
 
 void CPU::LDA_ABS_X()
 {
-
+    LoadABSOffset(Acc, X, Cycles, memory);
+    LDASetStatus();
 }
 
 void CPU::LDA_ABS_Y()
 {
-
+    LoadABSOffset(Acc, Y, Cycles, memory);
+    LDASetStatus();
 }
 
 void CPU::LDA_IND_X()
 {
-
+    Word Address = AddrIndirectX(Cycles, memory);
+    Acc = ReadByte(Cycles, memory, Address);
+    LDASetStatus();
 }
 
-void CPU::LDA_IND_Y()
+void CPU::LDA_IND_Y() // Needs testing
 {
-
+    Byte inputByte;
+    AddrIndirectY(inputByte, Cycles, memory);
+    Word addr = 0xFF00 & inputByte;
+    Acc = ReadByte(Cycles, memory, addr);
+    LDASetStatus();
 }
 
 void CPU::JMP_ABS()
 {
-
+    Word Address = FetchWord(Cycles, memory);
+    PC = Address;
 }
 
 void CPU::JSR()
 {
-
+    Word SubAddress = FetchWord(Cycles, memory);
+    PushPCMinusOneToStack(Cycles, memory);
+    PC = SubAddress;
+    Cycles--;
 }
 
 void CPU::JMP_IND()
 {
-
+    Word Address = FetchWord(Cycles, memory);
+    PC = ReadWord(Cycles, memory, Address);
 }
 
 void CPU::LDX_IM()
 {
-
+    LoadImmediate(X, Cycles, memory);
+    LDXSetStatus();
 }
 
 void CPU::LDX_ZP()
 {
-
+    LoadZP(X, Cycles, memory);
+    LDXSetStatus();
 }
 
 void CPU::LDX_ZP_Y()
 {
-
+    LoadZPOffset(X, Y, Cycles, memory);
+    LDXSetStatus();
 }
 
 void CPU::LDX_ABS()
 {
-
+    LoadABS(X, Cycles, memory);
+    LDXSetStatus();
 }
 
 void CPU::LDX_ABS_Y()
 {
-
+    LoadABSOffset(X, Y, Cycles, memory);
+    LDXSetStatus();
 }
 
 void CPU::TAX()
 {
-
+    X = Acc;
+    Cycles -= 2;
+    TAXSetStatus();
 }
 
 void CPU::TAY()
 {
-
+    Y = Acc;
+    Cycles -= 2;
+    TAYSetStatus();
 }
 
 void CPU::TSX()
 {
-
+    X = SP;
+    Cycles -= 2;
+    TAXSetStatus();
 }
 
 void CPU::TXA()
 {
-
+    Acc = X;
+    Cycles -= 2;
+    LDASetStatus();
 }
 
 void CPU::TXS()
 {
-
+    SP = X;
+    Cycles -= 2;
 }
 
 void CPU::TYA()
 {
-
+    Acc = Y;
+    Cycles -= 2;
+    LDASetStatus();
 }
 
 void CPU::AND_IM()
 {
-
+    Byte inputByte; 
+    LoadImmediate(inputByte, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::AND_ZP()
 {
-
+    Byte inputByte;
+    LoadZP(inputByte, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::AND_ZP_X()
 {
-
+    Byte inputByte;
+    LoadZPOffset(inputByte, X, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::AND_ABS()
 {
-
+    Byte inputByte;
+    LoadABS(inputByte, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::AND_ABS_X()
 {
-
+    Byte inputByte;
+    LoadABSOffset(inputByte, X, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::AND_ABS_Y()
 {
-
+    Byte inputByte;
+    LoadABSOffset(inputByte, Y, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::AND_IND_X()
 {
-
+    Word indirectAddress = AddrIndirectX(Cycles, memory);
+    Acc = Acc & ReadByte(Cycles, memory, indirectAddress);
+    ANDSetStatus();
 }
 
 void CPU::AND_IND_Y()
 {
-
+    Byte inputByte;
+    AddrIndirectY(inputByte, Cycles, memory);
+    Acc = Acc & inputByte;
+    ANDSetStatus();
 }
 
 void CPU::XOR_IM()
 {
-
+    Byte inputByte;
+    LoadABS(inputByte, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_ZP()
 {
-
+    Byte inputByte;
+    LoadImmediate(inputByte, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_ZP_X()
 {
-
+    Byte inputByte;
+    LoadZPOffset(inputByte, X, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_ABS()
 {
-
+    Byte inputByte;
+    LoadABS(inputByte, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_ABS_X()
 {
-
+    Byte inputByte;
+    LoadABSOffset(inputByte, X, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_ABS_Y()
 {
-
+    Byte inputByte;
+    LoadABSOffset(inputByte, Y, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_IND_X()
 {
-
+    Word indirectAddress = AddrIndirectX(Cycles, memory);
+    Byte inputByte = ReadByte(Cycles, memory, indirectAddress);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::XOR_IND_Y()
 {
-
+    Byte inputByte;
+    AddrIndirectY(inputByte, Cycles, memory);
+    Acc = Acc ^ inputByte;
+    XORSetStatus();
 }
 
 void CPU::IOR_IM()
 {
-
+    Byte inputByte;
+    LoadImmediate(inputByte, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_ZP()
 {
-
+    Byte inputByte;
+    LoadZP(inputByte, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_ZP_X()
 {
-
+    Byte inputByte;
+    LoadZPOffset(inputByte, X, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_ABS()
 {
-
+    Byte inputByte;
+    LoadABS(inputByte, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_ABS_X()
 {
-
+    Byte inputByte;
+    LoadABSOffset(inputByte, X, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_ABS_Y()
 {
-
+    Byte inputByte;
+    LoadABSOffset(inputByte, Y, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_IND_X()
 {
-
+    Word indirectAddress = AddrIndirectX(Cycles, memory);
+    Byte inputByte = ReadByte(Cycles, memory, indirectAddress);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::IOR_IND_Y()
 {
-
+    Byte inputByte;
+    AddrIndirectY(inputByte, Cycles, memory);
+    Acc = Acc | inputByte;
+    IORSetStatus();
 }
 
 void CPU::BIT_ZP()
 {
-
+    Byte inputByte;
+    Byte result;
+    LoadZP(inputByte, Cycles, memory);
+    result = inputByte & Acc;
+    BITSetStatus(result);
 }
 
 void CPU::BIT_ABS()
 {
-
+    Word inputAddr;
+    Byte inputByte;
+    inputByte = ReadByte(Cycles, memory, inputAddr);
+    Byte result = inputByte & Acc;
+    BITSetStatus(result);
 }

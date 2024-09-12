@@ -108,315 +108,207 @@ static constexpr Byte
 */
   
 	        
-            /*
-            switch (Ins)
-            {
-                case INS_LDA_IM:
-                {
-                    
-                } break;
-                    // Zero Page Access Mode
-                case INS_LDA_ZP:
-                {
-                    LoadZP(Acc, Cycles, memory);
-                    LDASetStatus();
-                } break;
-                case INS_LDA_ZP_X:
-                {
-                    LoadZPOffset(Acc, X, Cycles, memory);
-                    LDASetStatus();
-                } break;
-                case INS_LDA_ABS:
-                {
-                    LoadABS(Acc, Cycles, memory);
-                    LDASetStatus();
-                } break;
-                case INS_LDA_ABS_X:
-                {
-                    LoadABSOffset(Acc, X, Cycles, memory);
-                    LDASetStatus();
-                }break;
-                case INS_LDA_ABS_Y:
-                {
+    /*
+    switch (Ins)
+    {
+    case INS_LDA_IM:
+    {
 
-                    LoadABSOffset(Acc, Y, Cycles, memory);
-                    LDASetStatus();
-                }break;
-                    //  6502 Cannot obtain address if indirect vector falls on a page boundary
-                case INS_LDA_IND_X:
-                {
-                    Word Address = AddrIndirectX(Cycles, memory);
-                    Acc = ReadByte(Cycles, memory, Address);
-                    LDASetStatus();
-                }break;
-                case INS_LDX_IM:
-                {
-                    LoadImmediate(X, Cycles, memory);
-                    LDXSetStatus();
-                }break;
-                case INS_LDX_ZP:
-                {
-                    LoadZP(X, Cycles, memory);
-                    LDXSetStatus();
-                }break;
-                case INS_LDX_ZP_Y:
-                {
-                    LoadZPOffset(X, Y, Cycles, memory);
-                    LDXSetStatus();
-                }break;
-                case INS_LDX_ABS:
-                {
-                    LoadABS(X, Cycles, memory);
-                    LDXSetStatus();
-                }break;
-                case INS_LDX_ABS_Y:
-                {
-                    LoadABSOffset(X, Y, Cycles, memory);
-                    LDXSetStatus();
-                }break;
-                case INS_JMP_ABS:
-                {
-                    Word Address = FetchWord(Cycles, memory);
-                    PC = Address;
-                } break;
-                case INS_JMP_IND:
-                {
-                    Word Address = FetchWord(Cycles, memory);
-                    PC = ReadWord(Cycles, memory, Address);
-                }break;
-                case INS_JSR:
-                {
-                    Word SubAddress = FetchWord(Cycles, memory);
-                    PushPCMinusOneToStack(Cycles, memory);
-                    PC = SubAddress;
-                    Cycles--;
-                } break;
-                case INS_TAX:
-                {
-                    X = Acc;
-                    Cycles -= 2;
-                    TAXSetStatus();
-                } break;
-                case INS_TAY:
-                {
-                    Y = Acc;
-                    Cycles -= 2;
-                    TAYSetStatus();
-                } break;
-                case INS_TSX:
-                {
-                    X = SP;
-                    Cycles -= 2;
-                    TAXSetStatus();
-                } break;
-                case INS_TXA:
-                {
-                    Acc = X;
-                    Cycles -= 2;
-                    LDASetStatus();
-                } break;
-                case INS_TXS:
-                {
-                    SP = X;
-                    Cycles -= 2;
-                } break;
-                case INS_TYA:
-                {
-                    Acc = Y;
-                    Cycles -= 2;
-                    LDASetStatus();
-                } break;
-                case INS_AND_IM:
-                {
-                    Byte inputByte; 
-                    LoadImmediate(inputByte, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_AND_ZP:
-                {
-                    Byte inputByte;
-                    LoadZP(inputByte, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_AND_ZP_X:
-                {
-                    Byte inputByte;
-                    LoadZPOffset(inputByte, X, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_AND_ABS:
-                {
-                    Byte inputByte;
-                    LoadABS(inputByte, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_AND_ABS_X:
-                {
-                    Byte inputByte;
-                    LoadABSOffset(inputByte, X, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_AND_ABS_Y:
-                {
-                    Byte inputByte;
-                    LoadABSOffset(inputByte, Y, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_AND_IND_X:
-                {
-                    Word indirectAddress = AddrIndirectX(Cycles, memory);
-                    Acc = Acc & ReadByte(Cycles, memory, indirectAddress);
-                    ANDSetStatus();
-                }break;
-                case INS_AND_IND_Y:
-                {
-                    Byte inputByte;
-                    AddrIndirectY(inputByte, Cycles, memory);
-                    Acc = Acc & inputByte;
-                    ANDSetStatus();
-                }break;
-                case INS_XOR_IM:
-                {
-                    Byte inputByte;
-                    LoadABS(inputByte, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_ZP:
-                {
-                    Byte inputByte;
-                    LoadImmediate(inputByte, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_ZP_X:
-                {
-                    Byte inputByte;
-                    LoadZPOffset(inputByte, X, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_ABS:
-                {
-                    Byte inputByte;
-                    LoadABS(inputByte, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_ABS_X:
-                {
-                    Byte inputByte;
-                    LoadABSOffset(inputByte, X, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_ABS_Y:
-                {
-                    Byte inputByte;
-                    LoadABSOffset(inputByte, Y, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_IND_X:
-                {
-                    Word indirectAddress = AddrIndirectX(Cycles, memory);
-                    Byte inputByte = ReadByte(Cycles, memory, indirectAddress);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_XOR_IND_Y:
-                {
-                    Byte inputByte;
-                    AddrIndirectY(inputByte, Cycles, memory);
-                    Acc = Acc ^ inputByte;
-                    XORSetStatus();
-                }break;
-                case INS_IOR_IM:
-                {
-                    Byte inputByte;
-                    LoadImmediate(inputByte, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_ZP:
-                {
-                    Byte inputByte;
-                    LoadZP(inputByte, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_ZP_X:
-                {
-                    Byte inputByte;
-                    LoadZPOffset(inputByte, X, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_ABS:
-                {
-                    Byte inputByte;
-                    LoadABS(inputByte, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_ABS_X:
-                {
-                    Byte inputByte;
-                    LoadABSOffset(inputByte, X, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_ABS_Y:
-                {
-                    Byte inputByte;
-                    LoadABSOffset(inputByte, Y, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_IND_X:
-                {
-                    Word indirectAddress = AddrIndirectX(Cycles, memory);
-                    Byte inputByte = ReadByte(Cycles, memory, indirectAddress);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_IOR_IND_Y:
-                {
-                    Byte inputByte;
-                    AddrIndirectY(inputByte, Cycles, memory);
-                    Acc = Acc | inputByte;
-                    IORSetStatus();
-                }break;
-                case INS_BIT_ZP:
-                {
-                    Byte inputByte;
-                    Byte result;
-                    LoadZP(inputByte, Cycles, memory);
-                    result = inputByte & Acc;
-                    BITSetStatus(result);
-                }break;
-                case INS_BIT_ABS:
-                {
-                    Word inputAddr;
-                    Byte inputByte;
-                    inputByte = ReadByte(Cycles, memory, inputAddr);
-                    Byte result = inputByte & Acc;
-                    BITSetStatus(result);
-                }break;
-                default:
-                {
-                    printf("Instruction not found: %d \n", Ins);
-                    printf("PC value: %d \n", PC);
+    } break;
+    // Zero Page Access Mode
+    case INS_LDA_ZP:
+    {
+    } break;
+    case INS_LDA_ZP_X:
+    {
 
-                    if(!(settings & FLAG_IGNORE)) return -1;
-                } break;
-            }
+    } break;
+    case INS_LDA_ABS:
+    {
+
+    } break;
+    case INS_LDA_ABS_X:
+    {
+
+    }break;
+    case INS_LDA_ABS_Y:
+    {
+
+
+    }break;
+    //  6502 Cannot obtain address if indirect vector falls on a page boundary
+    case INS_LDA_IND_X:
+    {
+
+    }break;
+    case INS_LDX_IM:
+    {
+
+    }break;
+    case INS_LDX_ZP:
+    {
+
+    }break;
+    case INS_LDX_ZP_Y:
+    {
+
+    }break;
+    case INS_LDX_ABS:
+    {
+
+    }break;
+    case INS_LDX_ABS_Y:
+    {
+
+    }break;
+    case INS_JMP_ABS:
+    {
+
+    } break;
+    case INS_JMP_IND:
+    {
+
+    }break;
+    case INS_JSR:
+    {
+
+    } break;
+    case INS_TAX:
+    {
+
+    } break;
+    case INS_TAY:
+    {
+
+    } break;
+    case INS_TSX:
+    {
+
+    } break;
+    case INS_TXA:
+    {
+
+    } break;
+    case INS_TXS:
+    {
+
+    } break;
+    case INS_TYA:
+    {
+
+    } break;
+    case INS_AND_IM:
+    {
+
+    }break;
+    case INS_AND_ZP:
+    {
+
+    }break;
+    case INS_AND_ZP_X:
+    {
+
+    }break;
+    case INS_AND_ABS:
+    {
+
+    }break;
+    case INS_AND_ABS_X:
+    {
+
+    }break;
+    case INS_AND_ABS_Y:
+    {
+
+    }break;
+    case INS_AND_IND_X:
+    {
+
+    }break;
+    case INS_AND_IND_Y:
+    {
+
+    }break;
+    case INS_XOR_IM:
+    {
+
+    }break;
+    case INS_XOR_ZP:
+    {
+
+    }break;
+    case INS_XOR_ZP_X:
+    {
+
+    }break;
+    case INS_XOR_ABS:
+    {
+
+    }break;
+    case INS_XOR_ABS_X:
+    {
+
+    }break;
+    case INS_XOR_ABS_Y:
+    {
+
+    }break;
+    case INS_XOR_IND_X:
+    {
+
+    }break;
+    case INS_XOR_IND_Y:
+    {
+
+    }break;
+    case INS_IOR_IM:
+    {
+
+    }break;
+    case INS_IOR_ZP:
+    {
+
+    }break;
+    case INS_IOR_ZP_X:
+    {
+
+    }break;
+    case INS_IOR_ABS:
+    {
+
+    }break;
+    case INS_IOR_ABS_X:
+    {
+
+    }break;
+    case INS_IOR_ABS_Y:
+    {
+
+    }break;
+    case INS_IOR_IND_X:
+    {
+
+    }break;
+    case INS_IOR_IND_Y:
+    {
+
+    }break;
+    case INS_BIT_ZP:
+    {
+
+    }break;
+    case INS_BIT_ABS:
+    {
+
+    }break;
+    default:
+    {
+    printf("Instruction not found: %d \n", Ins);
+    printf("PC value: %d \n", PC);
+
+    if(!(settings & FLAG_IGNORE)) return -1;
+    } break;
+    }
 
 */
 
