@@ -8,15 +8,7 @@ void CPU::Reset(Memory& memory)
     SP = 0xFF;
     StackPage = 0x01;
     Acc = 0;
-    X = 0;
-    Y = 0;
-    N = 0;
-    V = 0;
-    B = 0;
-    D = 0;
-    I = 0;
-    Z = 0;
-    C = 0;
+    pStatus.status = 0;
     memory.Initialise();
 }
 
@@ -46,6 +38,13 @@ Word CPU::FetchWord(s32& Cycles, Memory& memory)
 Word CPU::FetchStackAddress()
 {
     return 0x0100 | SP;
+}
+
+Byte CPU::FetchByteFromStack(s32& Cycles, Memory& memory)
+{
+    Byte Data = ReadByte(Cycles, memory, FetchStackAddress());
+    SP++;
+    return Data;
 }
 
 Byte CPU::ReadByte(s32& Cycles, Memory& memory, Word Addr)
@@ -80,6 +79,12 @@ void CPU::WriteWord(s32& Cycles, Memory& memory, Word Addr, Word Value)
     memory[Addr] = Value & 0xFF;
     memory[Addr + 1] = (Value >> 8) & 0xFF;
     Cycles -= 2;
+}
+
+void CPU::PushByteToStack(s32& Cycles, Memory& memory, Byte Addr)
+{
+    WriteByte(Cycles, memory, FetchStackAddress(), Addr);
+    SP--;
 }
 
 void CPU::PushWordToStack(s32& Cycles, Memory& memory, Word Addr)
@@ -181,22 +186,22 @@ void CPU::printDebug()
 void CPU::printFlags()
 {
     printf("X Y N V B D I Z C\n");
-    printf("%d %d %d %d %d %d %d %d %d\n", X, Y, N, V, B, D, I, Z, C);
+    printf("%d %d %d %d %d %d %d %d %d\n", X, Y, pStatus.flags.N, pStatus.flags.V, pStatus.flags.B, pStatus.flags.D, pStatus.flags.I, pStatus.flags.Z, pStatus.flags.C);
 }
 
 void CPU::SetZeroFlag(Byte reg)
 {
-    Z = (reg == 0);
+    pStatus.flags.Z = (reg == 0);
 }
 
 void CPU::SetNegativeFlag(Byte reg)
 {
-    N = (reg & 0b10000000) > 0;
+    pStatus.flags.N = (reg & 0b10000000) > 0;
 }
 
 void CPU::SetOverflowFlag(Byte reg)
 {
-    V = (reg & 0b01000000) > 0;
+    pStatus.flags.V = (reg & 0b01000000) > 0;
 }
 
 void CPU::LDASetStatus()
@@ -246,6 +251,12 @@ void CPU::BITSetStatus(Byte result)
     SetZeroFlag(result);
     SetOverflowFlag(result);
     SetNegativeFlag(result);
+}
+
+void CPU::PLASetStatus()
+{
+    SetZeroFlag(Acc);
+    SetNegativeFlag(Acc);
 }
 
 int CPU::Execute(s32 Cycles, Memory& memory)
@@ -634,4 +645,29 @@ void CPU::BIT_ABS()
     inputByte = ReadByte(Cycles, memory, inputAddr);
     Byte result = inputByte & Acc;
     BITSetStatus(result);
+}
+
+void CPU::PHA()
+{
+    PushByteToStack(Cycles, memory, Acc);
+    Cycles-= 2;
+}
+
+void CPU::PHP()
+{
+    Byte storedStatus = pStatus.status;
+    PushByteToStack(Cycles, memory, storedStatus);
+}
+
+void CPU::PLA()
+{
+    Acc = FetchByteFromStack(Cycles, memory);
+    PLASetStatus();
+}
+
+void CPU::PLP()
+{
+    Byte newStatus = FetchByteFromStack(Cycles, memory);
+    SP++;
+    pStatus.status = newStatus;
 }
