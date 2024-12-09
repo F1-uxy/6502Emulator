@@ -1,5 +1,7 @@
 # 6502 Emulator
 
+Opcodes_LUT branch is most up to date
+
 For first time builds:
 Run `cmake ..` in the root directory to initialise the build folder
 
