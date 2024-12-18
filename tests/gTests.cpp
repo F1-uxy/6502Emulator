@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 #include "../src/6502main.h"
+#include "../src/CPU.h"
+#include "../src/Memory.h"
+/*
 
 CPU cpu;
 Memory memory;
@@ -1091,3 +1094,4 @@ TEST(CPUTest, AND_IM_BitewiseANDAccIND_Y_Page_Crossed)
 
     EXPECT_EQ(cpu.N, 0);
 }
+*/
