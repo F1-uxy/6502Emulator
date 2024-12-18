@@ -13,6 +13,7 @@ To run tests:
 Run `6502EmulatorTests` in `bin` directory
 
 The complete instruction set has been implemented but not tested
+MANY BUGS
 
 To do:
 - Update and complete testing to LUT version
